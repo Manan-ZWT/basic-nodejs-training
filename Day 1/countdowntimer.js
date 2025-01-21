@@ -1,5 +1,3 @@
-const process = require("process");
-
 let end_time = parseInt(process.argv[2]);
 
 const count = setInterval(() => {

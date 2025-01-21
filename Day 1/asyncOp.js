@@ -10,7 +10,7 @@ if (success_bool == 1) {
   return;
 }
 
-function fetchData(success) {
+const fetchData =(success) =>{
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (success) {

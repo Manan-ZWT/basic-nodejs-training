@@ -6,6 +6,7 @@ if (success_bool == 1) {
 } else if (success_bool == 0) {
   success_value = false;
 } else {
+    console.log("Invalid input")
   return;
 }
 

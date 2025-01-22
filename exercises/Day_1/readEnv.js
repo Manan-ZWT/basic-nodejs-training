@@ -1,4 +1,4 @@
-const dotenv = require("dotenv").config({ path: "../../.env" });
+const dotenv = require("dotenv").config(".env");
 
 const appName = process.env.APP_NAME;
 const appEnv = process.env.APP_ENV;

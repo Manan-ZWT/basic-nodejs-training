@@ -151,7 +151,7 @@ const myServer = http.createServer((req, res) => {
       append_file(dirpath, filename, content, req, res);
       break;
 
-    //   DELETING A FILE
+    //   CASE 5: DELETING A FILE
     case "/delete":
       delete_file(dirpath, filename, req, res);
       break;

@@ -7,11 +7,11 @@ const myServer = http.createServer((req, res) => {
   const myURL = url.parse(req.url, true);
   const filename = myURL.query.name;
   const content = myURL.query.content;
-
+  const dirpath = path.join(__dirname, "scrap");
   switch (myURL.pathname) {
     //CASE 1: FOR SHOWING ALL FILES IN THE DIRECTORY
     case "/list":
-      fs.readdir(".", (err, files) => {
+      fs.readdir(dirpath, (err, files) => {
         if (err) {
           console.error("Error reading directory:");
           res.writeHead(500, { "Content-Type": "text/plain" });
@@ -30,18 +30,17 @@ const myServer = http.createServer((req, res) => {
 
     //   CASE 2: READING A TEXT FILE
     case "/file":
-      //   let fileurl = myURL.query.name;
-      if (!__filename) {
+      if (!filename) {
         console.error("Bad request from the user");
         res.writeHead(400, { "Content-Type": "text/plain" });
         res.end("Bad Request: No query parameter provided.");
         break;
-      } else if (!fs.existsSync(filename)) {
+      } else if (!fs.existsSync(path.join(dirpath,filename))) {
         console.error("File does not exists");
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("File Not Found");
       } else {
-        fs.readFile(filename, "utf-8", (err, data) => {
+        fs.readFile(path.join(dirpath,filename), "utf-8", (err, data) => {
           if (err) {
             console.error("Error in reading the file");
             res.writeHead(500, { "Content-Type": "text/plain" });
@@ -57,18 +56,18 @@ const myServer = http.createServer((req, res) => {
 
     //   CASE 3: CREATING A FILE WITH CONTENT
     case "/create":
-      if (!filename || !content) {
+      if (!path.join(dirpath,filename)|| !content) {
         console.error("Bad request from the user");
         res.writeHead(400, { "Content-Type": "text/plain" });
         res.end("Bad Request: Not enough query parameters.");
         return;
-      } else if (fs.existsSync(filename)) {
+      } else if (fs.existsSync(path.join(dirpath,filename))) {
         console.error("User trying to change the existing resource");
         res.writeHead(409, { "Content-Type": "text/plain" });
         res.end("Conflict: File already exists.");
         return;
       } else {
-        fs.writeFile(filename, content, (err) => {
+        fs.writeFile(path.join(dirpath,filename), content, (err) => {
           if (err) {
             console.error("Error creating the file");
             res.writeHead(500, { "Content-Type": "text/plain" });
@@ -84,18 +83,18 @@ const myServer = http.createServer((req, res) => {
 
     //   CASE 4: APPENDING TO THE FILE CONTENT
     case "/append":
-      if (!filename || !content) {
+      if (!path.join(dirpath,filename) || !content) {
         console.error("Bad request from the user");
         res.writeHead(400, { "Content-Type": "text/plain" });
         res.end("Bad Request: Not enough query parameters.");
         return;
-      } else if (!fs.existsSync(filename)) {
+      } else if (!fs.existsSync(path.join(dirpath,filename))) {
         console.error("User is trying to change on a non existing file");
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("File not found");
         return;
       } else {
-        fs.appendFile(filename, `\n${content}`, (err) => {
+        fs.appendFile(path.join(dirpath,filename), `\n${content}`, (err) => {
           if (err) {
             console.error("Error creating the file");
             res.writeHead(500, { "Content-Type": "text/plain" });
@@ -111,18 +110,18 @@ const myServer = http.createServer((req, res) => {
 
     //   DELETING A FILE
     case "/delete":
-      if (!filename) {
+      if (!path.join(dirpath,filename)) {
         console.error("Bad request from the user");
         res.writeHead(400, { "Content-Type": "text/plain" });
         res.end("Bad Request: Not enough query parameters.");
         return;
-      } else if (!fs.existsSync(filename)) {
+      } else if (!fs.existsSync(path.join(dirpath,filename))) {
         console.error("User is trying to delete a non existing file");
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("File not found");
         return;
       } else {
-        fs.unlink(filename, (err) => {
+        fs.unlink(path.join(dirpath,filename), (err) => {
           if (err) {
             console.error("Error deleting the file");
             res.writeHead(500, { "Content-Type": "text/plain" });

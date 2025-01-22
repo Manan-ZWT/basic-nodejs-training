@@ -1,17 +1,31 @@
 const fs = require("fs");
+const readline = require("readline");
 
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
-const dirpath=`..\\Day_1`;
+rl.question("Enter the directory path: ", (dirpath) => {
+  try {
+    if (!fs.existsSync(dirpath)) {
+      throw "No such directory has been found";
+    } else {
+      fs.readdir(dirpath, (err, files) => {
+        if (err) {
+          console.error("Error reading directory:", err.message);
+        } else {
+          console.log(`List of files in ${dirpath}:`);
+          files.forEach((file) => {
+            console.log(file);
+          });
+        }
 
-fs.readdir(dirpath,(err,files)=>{
-    try{
-        console.log(`List of files in ${dirpath} :`)
-        files.forEach((file)=>{
-            console.log(`\n${file}`);
-        });
+        rl.close();
+      });
     }
-    catch(err){
-        // console.log(err);
-        console.log(`no file found in the directory`);
-    }
+  } catch (err) {
+    console.error(err);
+    rl.close();
+  }
 });

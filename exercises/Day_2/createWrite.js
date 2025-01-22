@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 rl.question("Enter the content you want to add to the file:", (data) => {
   fs.writeFile(scrapfilepath, data, (err) => {
     if (err) {
-      console.log(err);
+      console.error(err);
       rl.close();
     }
     else{

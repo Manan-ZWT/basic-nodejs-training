@@ -31,7 +31,7 @@ const default_error = (request, response) => {
 
 // LIST FUNCTION
 const read_directory = (dir_path, request, response) => {
-  fs.readdir(dir_path, (err, files) => {
+  fs.readdir(dir_path,{withFileTypes:true},(err, files) => {
     if (err) {
       console.error("Error reading directory:");
       response.writeHead(500, { "Content-Type": "text/plain" });
@@ -41,7 +41,9 @@ const read_directory = (dir_path, request, response) => {
       response.writeHead(200, { "Content-Type": "text/plain" });
       response.write("List of files:\n");
       files.forEach((file) => {
-        response.write(`${file}\n`);
+        if(file.isFile()){
+        response.write(`${file.name}\n`);
+        }
       });
       response.end();
     }

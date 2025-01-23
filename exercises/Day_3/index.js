@@ -1,5 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
+import path from "path";
+import fs from "fs";
 dotenv.config();
 import { users } from "./constant.js";
 
@@ -7,6 +9,22 @@ const app = express();
 const port = process.env.D3_APP_PORT;
 
 app.use(express.json());
+
+app.use((req, res, next) => {
+  const date = new Date();
+  const logMessage = `Request method- ${req.method}
+    IP Address- ${req.ip}
+    Time- ${date.getHours()}H:${date.getMinutes()}M:${date.getSeconds()}\n \n`;
+
+  fs.appendFile(path.join("log.txt"), logMessage, (err) => {
+    if (err) {
+      res.status(403).end("You are not allowed");
+    } else {
+      next();
+    }
+  });
+});
+
 app.get("/", (req, res) => {
   console.log("User connected to the server");
   res.status(200).send(`Welcome to the User Management API!`);

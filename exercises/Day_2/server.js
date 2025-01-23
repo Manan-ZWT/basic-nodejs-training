@@ -31,7 +31,7 @@ const default_error = (request, response) => {
 
 // LIST FUNCTION
 const read_directory = (dir_path, request, response) => {
-  fs.readdir(dir_path,{withFileTypes:true},(err, files) => {
+  fs.readdir(dir_path,(err, files) => {
     if (err) {
       console.error("Error reading directory:");
       response.writeHead(500, { "Content-Type": "text/plain" });
@@ -56,7 +56,13 @@ const read_file = (dir_path, file_name, request, response) => {
     console.error("Bad request from the user");
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: No query parameter provided.");
-  } else if (!fs.existsSync(path.join(dir_path, file_name))) {
+  } 
+  else if(path.extname(path.join(dir_path, file_name))!=".txt"){
+    console.error("User is trying to read a file a non-text file");
+    response.writeHead(415,{"Content-Type": "text/plain" });
+    response.end("Unsupported Media type")
+  }
+  else if (!fs.existsSync(path.join(dir_path, file_name))) {
     console.error("File does not exists");
     response.writeHead(404, { "Content-Type": "text/plain" });
     response.end("File Not Found");

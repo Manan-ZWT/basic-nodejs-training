@@ -3,9 +3,10 @@ const http = require("http");
 const fs = require("fs");
 const url = require("url");
 const path = require("path");
+const dotenv = require("dotenv").config(".env");
 
 //PORT NUMBER
-const port_number = 7777;
+const port_number = process.env.D2_APP_PORT;
 
 //WELCOME FUNCTION
 const welcome = (request, response) => {
@@ -31,7 +32,7 @@ const default_error = (request, response) => {
 
 // LIST FUNCTION
 const read_directory = (dir_path, request, response) => {
-  fs.readdir(dir_path,(err, files) => {
+  fs.readdir(dir_path, { withFileTypes: true }, (err, files) => {
     if (err) {
       console.error("Error reading directory:");
       response.writeHead(500, { "Content-Type": "text/plain" });
@@ -41,8 +42,8 @@ const read_directory = (dir_path, request, response) => {
       response.writeHead(200, { "Content-Type": "text/plain" });
       response.write("List of files:\n");
       files.forEach((file) => {
-        if(file.isFile()){
-        response.write(`${file.name}\n`);
+        if (file.isFile()) {
+          response.write(`${file.name}\n`);
         }
       });
       response.end();
@@ -56,13 +57,11 @@ const read_file = (dir_path, file_name, request, response) => {
     console.error("Bad request from the user");
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: No query parameter provided.");
-  } 
-  else if(path.extname(path.join(dir_path, file_name))!=".txt"){
+  } else if (path.extname(path.join(dir_path, file_name)) != ".txt") {
     console.error("User is trying to read a file a non-text file");
-    response.writeHead(415,{"Content-Type": "text/plain" });
-    response.end("Unsupported Media type")
-  }
-  else if (!fs.existsSync(path.join(dir_path, file_name))) {
+    response.writeHead(415, { "Content-Type": "text/plain" });
+    response.end("Unsupported Media type");
+  } else if (!fs.existsSync(path.join(dir_path, file_name))) {
     console.error("File does not exists");
     response.writeHead(404, { "Content-Type": "text/plain" });
     response.end("File Not Found");
@@ -83,18 +82,16 @@ const read_file = (dir_path, file_name, request, response) => {
 
 // CREATE FUNCTION
 const create_file = (dir_path, file_name, data, request, response) => {
-  if (!path.join(dir_path, file_name) || !data) {
+  if (!file_name || !data) {
     console.error("Bad request from the user");
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: Not enough query parameters.");
     return;
-  } 
-  else if(path.extname(path.join(dir_path, file_name))!=".txt"){
+  } else if (path.extname(path.join(dir_path, file_name)) != ".txt") {
     console.error("User is trying to create non-text file");
-    response.writeHead(415,{"Content-Type": "text/plain" });
-    response.end("Unsupported Media type")
-  }
-  else if (fs.existsSync(path.join(dir_path, file_name))) {
+    response.writeHead(415, { "Content-Type": "text/plain" });
+    response.end("Unsupported Media type");
+  } else if (fs.existsSync(path.join(dir_path, file_name))) {
     console.error("User trying to change the existing resource");
     response.writeHead(409, { "Content-Type": "text/plain" });
     response.end("Conflict: File already exists.");
@@ -116,11 +113,15 @@ const create_file = (dir_path, file_name, data, request, response) => {
 
 // APPEND FUCNTION
 const append_file = (dir_path, file_name, data, request, response) => {
-  if (!path.join(dir_path, file_name) || !data) {
+  if (!file_name || !data) {
     console.error("Bad request from the user");
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: Not enough query parameters.");
     return;
+  } else if (path.extname(path.join(dir_path, file_name)) != ".txt") {
+    console.error("User is trying to change a non-text file");
+    response.writeHead(415, { "Content-Type": "text/plain" });
+    response.end("Unsupported Media type");
   } else if (!fs.existsSync(path.join(dir_path, file_name))) {
     console.error("User is trying to change on a non existing file");
     response.writeHead(404, { "Content-Type": "text/plain" });
@@ -143,7 +144,7 @@ const append_file = (dir_path, file_name, data, request, response) => {
 
 // DELETE FUCNTION
 const delete_file = (dir_path, file_name, request, response) => {
-  if (!path.join(dir_path, file_name)) {
+  if (!file_name) {
     console.error("Bad request from the user");
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: Not enough query parameters.");

@@ -88,7 +88,13 @@ const create_file = (dir_path, file_name, data, request, response) => {
     response.writeHead(400, { "Content-Type": "text/plain" });
     response.end("Bad Request: Not enough query parameters.");
     return;
-  } else if (fs.existsSync(path.join(dir_path, file_name))) {
+  } 
+  else if(path.extname(path.join(dir_path, file_name))!=".txt"){
+    console.error("User is trying to create non-text file");
+    response.writeHead(415,{"Content-Type": "text/plain" });
+    response.end("Unsupported Media type")
+  }
+  else if (fs.existsSync(path.join(dir_path, file_name))) {
     console.error("User trying to change the existing resource");
     response.writeHead(409, { "Content-Type": "text/plain" });
     response.end("Conflict: File already exists.");

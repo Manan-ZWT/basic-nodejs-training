@@ -1,10 +1,35 @@
+//REQUIRED MODULES
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
 const path = require("path");
 
+//PORT NUMBER
 const port_number = 7777;
 
+//WELCOME FUNCTION
+const welcome = (request, response) => {
+  console.log(`Succesfully connected to the server on port ${port_number}`);
+  response.writeHead(200, { "Content-Type": "text/plain" });
+  response.write(
+    `WELCOME TO THE SERVER:
+    1. TO REQUEST LIST OF FILES TYPE:"\\List"
+    2. TO READ A FILE TYPE:"\\file?name=filename.txt"
+    3. TO CREATE A FILE WITH CONTENT:"\\create?name=filename.txt&content=NewContent"
+    4. TO APPEND CONTENT TO AN EXISTING FILE:"\\append?name=filename.txt&content=NewContent"
+    5.TO DELETE A FILE:"\\delete?name=filename.txt"`
+  );
+  response.end("");
+};
+
+// DEFAULT ERROR FUNCTION
+const default_error = (request, response) => {
+  console.log(`Default error`);
+  response.writeHead(404, { "Content-Type": "text/plain" });
+  response.end("File Not Found");
+};
+
+// LIST FUNCTION
 const read_directory = (dir_path, request, response) => {
   fs.readdir(dir_path, (err, files) => {
     if (err) {
@@ -23,6 +48,7 @@ const read_directory = (dir_path, request, response) => {
   });
 };
 
+// READ FUNCTION
 const read_file = (dir_path, file_name, request, response) => {
   if (!file_name) {
     console.error("Bad request from the user");
@@ -47,6 +73,7 @@ const read_file = (dir_path, file_name, request, response) => {
   }
 };
 
+// CREATE FUNCTION
 const create_file = (dir_path, file_name, data, request, response) => {
   if (!path.join(dir_path, file_name) || !data) {
     console.error("Bad request from the user");
@@ -73,6 +100,7 @@ const create_file = (dir_path, file_name, data, request, response) => {
   }
 };
 
+// APPEND FUCNTION
 const append_file = (dir_path, file_name, data, request, response) => {
   if (!path.join(dir_path, file_name) || !data) {
     console.error("Bad request from the user");
@@ -99,6 +127,7 @@ const append_file = (dir_path, file_name, data, request, response) => {
   }
 };
 
+// DELETE FUCNTION
 const delete_file = (dir_path, file_name, request, response) => {
   if (!path.join(dir_path, file_name)) {
     console.error("Bad request from the user");
@@ -125,12 +154,18 @@ const delete_file = (dir_path, file_name, request, response) => {
   }
 };
 
+// SERVER CODE
 const myServer = http.createServer((req, res) => {
   const myURL = url.parse(req.url, true);
   const filename = myURL.query.name;
   const content = myURL.query.content;
   const dirpath = path.join(__dirname, "scrap");
   switch (myURL.pathname) {
+    //CASE 0: FOR WELCOME
+    case "/":
+      welcome(req, res);
+      break;
+
     //CASE 1: FOR SHOWING ALL FILES IN THE DIRECTORY
     case "/list":
       read_directory(dirpath, req, res);
@@ -155,8 +190,13 @@ const myServer = http.createServer((req, res) => {
     case "/delete":
       delete_file(dirpath, filename, req, res);
       break;
+
+    // DEFAULT
+    default:
+      default_error(req, res);
+      break;
   }
 });
 myServer.listen(port_number, () => {
-  console.log("Server started on port");
+  console.log(`Server started on port: ${port_number}`);
 });

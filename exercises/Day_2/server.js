@@ -163,32 +163,62 @@ const myServer = http.createServer((req, res) => {
   switch (myURL.pathname) {
     //CASE 0: FOR WELCOME
     case "/":
-      welcome(req, res);
+      if (req.method === "GET") {
+        welcome(req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     //CASE 1: FOR SHOWING ALL FILES IN THE DIRECTORY
     case "/list":
-      read_directory(dirpath, req, res);
+      if (req.method === "GET") {
+        read_directory(dirpath, req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     //   CASE 2: READING A TEXT FILE
     case "/file":
-      read_file(dirpath, filename, req, res);
+      if (req.method === "GET") {
+        read_file(dirpath, filename, req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     //   CASE 3: CREATING A FILE WITH CONTENT
     case "/create":
-      create_file(dirpath, filename, content, req, res);
+      if (req.method === "GET") {
+        create_file(dirpath, filename, content, req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     //   CASE 4: APPENDING TO THE FILE CONTENT
     case "/append":
-      append_file(dirpath, filename, content, req, res);
+      if (req.method === "GET") {
+        append_file(dirpath, filename, content, req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     //   CASE 5: DELETING A FILE
     case "/delete":
-      delete_file(dirpath, filename, req, res);
+      if (req.method === "GET") {
+        delete_file(dirpath, filename, req, res);
+      } else {
+        res.writeHead(405, { "Content-Type": "text/plain" });
+        res.end("Method Not Allowed");
+      }
       break;
 
     // DEFAULT

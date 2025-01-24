@@ -1,4 +1,4 @@
-import { users } from "../../../constant.js";
+import { users } from "../../../../constant.js";
 
 export const getAllUsers = (req, res) => {
   const validRoles = ["Admin", "User"];

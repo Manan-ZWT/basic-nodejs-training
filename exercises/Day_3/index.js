@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
-import userRoutes from "./routes/userRoutes.js";
-import logMiddleware from "./middlewares/logMiddleware.js";
-import validateId from "./middlewares/validateId.js"
+import userRoutes from "./src/routes/userRoutes.js";
+import logMiddleware from "./src/middlewares/logMiddleware.js";
+import validateId from "./src/middlewares/validateId.js"
 
 dotenv.config();
 const app = express();

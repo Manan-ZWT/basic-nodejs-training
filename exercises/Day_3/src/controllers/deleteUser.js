@@ -1,4 +1,4 @@
-import { users } from "../../../constant.js";
+import { users } from "../../../../constant.js";
 
 export const deleteUser = (req, res) => {
   let userId = parseInt(req.params.id);

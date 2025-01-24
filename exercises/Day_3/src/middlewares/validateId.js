@@ -1,4 +1,4 @@
-import { users } from "../../../constant.js";
+import { users } from "../../../../constant.js";
 
 const validateId = (req, res, next) => {
   if (

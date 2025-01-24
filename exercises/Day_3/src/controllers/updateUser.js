@@ -1,28 +1,36 @@
-import { users} from "../../../constant.js";
-let count=2;
-export const addUser = (req, res) => {
+import { users } from "../../../../constant.js";
+
+export const updateUser = (req, res) => {
   const nameRegex = /^[a-zA-Z\s]+$/;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const validRoles = ["Admin", "User"];
-  let { name, email, age, role, isActive } = req.body;
-  let user = users.find((u) => u.email === email);
 
-  if (!user) {
-    if (
-      nameRegex.test(name) &&
-      Number.isInteger(age) &&
-      age >= 1 &&
-      emailRegex.test(email) &&
-      validRoles.includes(role) &&
-      typeof isActive === "boolean"
-    ) {
-      // let id = users.length === 0 ? 1 : users[users.length - 1].id + 1;
-      let id = ++count;
-      const data = `id: ${id}, name:${name}, email:${email}, age:${age}, role:${role}, isActive:${isActive}`;
-      users.push({ id, name, email, age, role, isActive });
-      res
-        .status(200)
-        .json({ Message: "User has been successfully added", data: data });
+  let { name, email, age, role, isActive } = req.body;
+  let userId = parseInt(req.params.id);
+  let user = users.find((u) => u.id === userId);
+  let user_email = users.find((u) => u.email === email && u.id !== userId);
+
+  if (!user_email) {
+    if (user) {
+      if (name && nameRegex.test(name)) {
+        user.name = name;
+      }
+      if (email && emailRegex.test(email)) {
+        user.email = email;
+      }
+      if (age && Number.isInteger(age) && age >= 1) {
+        user.age = age;
+      }
+      if (role && validRoles.includes(role)) {
+        user.role = role;
+      }
+      if (isActive && typeof isActive === "boolean") {
+        user.isActive = isActive;
+      }
+      res.status(200).json({
+        message: `Data of the User with id:${userId} has been succesfully updated`,
+        data: user,
+      });
     } else {
       if (!nameRegex.test(name)) {
         return res.status(406).json({

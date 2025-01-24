@@ -1,4 +1,5 @@
-let users = [
+export let count=2;
+export let users = [
   {
     id: 1,
     name: "John Doe",
@@ -17,4 +18,3 @@ let users = [
   },
 ];
 
-export {users};

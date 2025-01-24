@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import logMiddleware from "./middlewares/logMiddleware.js";
-import userValidationMiddleware from "./middlewares/validateId.js";
+import validateId from "./middlewares/validateId.js"
 
 dotenv.config();
 const app = express();
@@ -10,7 +10,7 @@ const port = process.env.D3_APP_PORT;
 
 app.use(express.json());
 app.use(logMiddleware);
-app.use("/users/:id", userValidationMiddleware);
+app.use("/users/:id", validateId);
 app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {

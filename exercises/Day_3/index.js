@@ -11,18 +11,21 @@ const port = process.env.D3_APP_PORT;
 app.use(express.json());
 
 app.use((req, res, next) => {
-  const date = new Date();
-  const logMessage = `Request method- ${req.method}
+  if (req.url !== "/favicon.ico") {
+    const date = new Date();
+    const logMessage = `
+    Request method- ${req.method}
+    Request Path- ${req.originalUrl}
     IP Address- ${req.ip}
-    Time- ${date.getHours()}H:${date.getMinutes()}M:${date.getSeconds()}\n \n`;
+    Time- ${date.getHours()}H:${date.getMinutes()}M:${date.getSeconds()}S\n \n`;
 
-  fs.appendFile(path.join("log.txt"), logMessage, (err) => {
-    if (err) {
-      res.status(403).end("You are not allowed");
-    } else {
-      next();
-    }
-  });
+    fs.appendFile(path.join("log.txt"), logMessage, (err) => {
+      if (err) {
+        res.status(403).end("You are not allowed");
+      }
+    });
+  }
+  next();
 });
 
 app.get("/", (req, res) => {

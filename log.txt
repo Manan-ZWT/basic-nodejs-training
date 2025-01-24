@@ -1,4 +1,0 @@
-Request method- GET
-    IP Address- ::1
-    Time- 19H:33M:3
- 

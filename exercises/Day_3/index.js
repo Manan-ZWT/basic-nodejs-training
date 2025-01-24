@@ -18,8 +18,7 @@ app.use((req, res, next) => {
     Request Path- ${req.originalUrl}
     IP Address- ${req.ip}
     Time- ${date.getHours()}H:${date.getMinutes()}M:${date.getSeconds()}S\n \n`;
-
-    fs.appendFile(path.join("log.txt"), logMessage, (err) => {
+    fs.appendFile(path.join(process.cwd(),"\\exercises\\Day_3\\log.txt"), logMessage, (err) => {
       if (err) {
         res.status(403).end("You are not allowed");
       }

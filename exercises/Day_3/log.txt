@@ -1,6 +1,0 @@
-
-    Request method- GET
-    Request Path- /users/1
-    IP Address- ::1
-    Time- 10H:19M:26S
- 

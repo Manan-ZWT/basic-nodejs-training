@@ -27,6 +27,21 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/users/:id",(req,res,next)=>{
+  if(req.params.id && (req.method==="GET" || req.method==="PATCH") || req.method==="DELETE"){
+    let userId = parseInt(req.params.id);
+    let user = users.find((u) => u.id === userId);
+    if (user) {
+      next();
+    } else {
+      res.status(404).json({ error: "User not found from middleware" });
+      return;
+    }
+  }
+});
+
+
+
 app.get("/", (req, res) => {
   console.log("User connected to the server");
   res.status(200).send(`Welcome to the User Management API!`);
@@ -36,7 +51,6 @@ app.get("/users", (req, res) => {
   if (users.length === 0) {
     res.status(404).send("No users found");
   } else {
-    users;
     res.status(200).json(users);
   }
 });
@@ -47,15 +61,13 @@ app.get("/users/:id", (req, res) => {
 
   if (user) {
     res.status(200).json(user);
-  } else {
-    res.status(404).send("User not found!");
   }
 });
 
 app.post("/users", (req, res) => {
-  console.log(req.body);
+  console.log(`New entry:\n${req.body}`);
   let { name, email, age, role, isActive } = req.body;
-  let id = users.length + 1;
+  let id = users.length === 0 ? 1 : users[users.length-1].id + 1;
   users.push({ id, name, email, age, role, isActive });
   res.status(200).send("User has been succesfully added");
 });
@@ -67,14 +79,12 @@ app.patch("/users/:id", (req, res) => {
   let user = users.find((u) => u.id === userId);
   if (user) {
     user.name = name;
-    user, (email = email);
+    user.email = email;
     user.age = age;
     user.role = role;
     user.isActive = isActive;
     res.status(200).send("User has been succesfully updated");
-  } else {
-    res.status(404).send("User not Found!");
-  }
+  } 
 });
 
 app.delete("/users/:id", (req, res) => {
@@ -83,8 +93,6 @@ app.delete("/users/:id", (req, res) => {
   if (userIndex !== -1) {
     users.splice(userIndex, 1);
     res.status(200).json("User has been succesfully deleted");
-  } else {
-    res.status(404).send("User not Found!");
   }
 });
 

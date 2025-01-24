@@ -1,1 +1,9 @@
 Hello!!, My name is Manan
+
+ {
+    "name": "Manan Patel",
+    "email": "manan@example.com",
+    "age": 21,
+    "role": "Intern",
+    "isActive": true
+ }

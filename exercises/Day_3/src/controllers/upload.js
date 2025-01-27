@@ -21,17 +21,19 @@ const fileFilter = (req, file, cb) => {
   const filetypes = /jpeg|jpg|png/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb(new Error("Only .jpg and .png files are allowed!"), false);
+  if (file.fileSize <= 2 * 1024 * 1024) {
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(`error: Only .jpg and .png files are allowed!`, false);
+    }
   }
+  cb(`error: File should be smaller than 2MB`, false);
 };
 
 export const upload = multer({
   storage: storage,
-  limits: { fileSize: 2 * 1000 * 1000 },
+  limits: { fileSize: 2 * 1024 * 1024 },
   fileFilter: fileFilter,
 });
 

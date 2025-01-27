@@ -5,6 +5,8 @@ import {
   addUser,
   updateUser,
   deleteUser,
+  upload, 
+  upload_file
 } from "../controllers/userController.js";
 
 const router = express.Router();

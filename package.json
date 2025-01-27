@@ -2,11 +2,11 @@
   "name": "node-js-training",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "day-2": "node exercises/Day_2/server.js",
-    "day-3": "node exercises/Day_3/index.js"
+    "day-3": "node exercises/Day_3/index.js",
+    "day-4": "node exercises/Day_4/file_upload.js"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
     "nodemon": "^3.1.9"
   }
 }

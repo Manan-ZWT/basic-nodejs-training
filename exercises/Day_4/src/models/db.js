@@ -48,7 +48,7 @@ export async function insertNew(name, email, age, role, isActive) {
     const [rows] = await pool.query(
       `INSERT INTO users (name, email, age, role, isActive) 
         VALUES (?, ?, ?, ?, ?)`,
-      [id, name, email, age, role, isActive]
+      [name, email, age, role, isActive]
     );
     return rows;
   } catch (error) {

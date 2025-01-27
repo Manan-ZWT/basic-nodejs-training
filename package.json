@@ -6,8 +6,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "day-2": "node exercises/Day_2/server.js",
     "day-3": "node exercises/Day_3/index.js",
-    "day-4": "node exercises/Day_4/file_upload.js"
+    "day-4": "node exercises/Day_4/index.js"
   },
+  "type": "module",
   "author": "",
   "license": "ISC",
   "description": "",
@@ -15,6 +16,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0",
     "nodemon": "^3.1.9"
   }
 }

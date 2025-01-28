@@ -35,7 +35,7 @@ export async function showAll() {
 
 export async function showUser(id) {
   try {
-    const [rows] = await pool.query(`SELECT * FROM users WHERE id=?;`,[id]);
+    const [rows] = await pool.query(`SELECT * FROM users WHERE id=?;`, [id]);
     return rows;
   } catch (error) {
     console.error("Error inserting new user:", error);
@@ -53,6 +53,32 @@ export async function insertNew(name, email, age, role, isActive) {
     return rows;
   } catch (error) {
     console.error("Error inserting new user:", error);
+    throw error;
+  }
+}
+
+export async function updateUser(update_string, id) {
+  try {
+    const [rows] = await pool.query(
+      `UPDATE users SET ${update_string} WHERE id=?`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.error("Error updating user:", error);
+    throw error;
+  }
+}
+
+export async function deleteUser(){
+  try {
+    const [rows] = await pool.query(
+      `UPDATE users SET ${update_string} WHERE id=?`,
+      [id]
+    );
+    return rows;
+  } catch (error) {
+    console.error("Error updating user:", error);
     throw error;
   }
 }

@@ -3,10 +3,7 @@ import dotenv from "dotenv";
 import userRoutes from "./src/routes/userRoutes.js";
 import logMiddleware from "./src/middlewares/logMiddleware.js";
 import validateId from "./src/middlewares/validateId.js";
-import {
-  upload,
-  upload_file,
-} from "../Day_3/src/controllers/userController.js";
+import { upload, upload_file } from "./src/controllers/userController.js";
 
 dotenv.config();
 const app = express();

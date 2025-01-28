@@ -1,27 +1,4 @@
-import mysql from "mysql2";
-import dotenv from "dotenv";
-dotenv.config();
-
-export const pool = mysql
-  .createPool({
-    host: process.env.D4_DB_HOST,
-    user: process.env.D4_DB_USER,
-    password: process.env.D4_DB_PASSWORD,
-    database: process.env.D4_DB_NAME,
-  })
-  .promise();
-
-pool.query(
-  `CREATE TABLE IF NOT EXISTS users 
-(id INT AUTO_INCREMENT PRIMARY KEY,
-name TEXT NOT NULL, 
-email VARCHAR(255) UNIQUE, 
-age INT, 
-role VARCHAR(255), 
-isActive BOOLEAN, 
-createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
-updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
-);
+import { pool } from "./config.js";
 
 export async function showAll() {
   try {
@@ -70,15 +47,33 @@ export async function updateUser(update_string, id) {
   }
 }
 
-export async function userDelete(id){
+export async function userDelete(id) {
   try {
-    const [rows] = await pool.query(
-      `DELETE FROM users WHERE id=?`,
-      [id]
-    );
+    const [rows] = await pool.query(`DELETE FROM users WHERE id=?`, [id]);
     return rows;
   } catch (error) {
     console.error("Error deleting user:", error);
+    throw error;
+  }
+}
+
+export async function insertImage(
+  userid,
+  imagename,
+  path,
+  mimetype,
+  extension,
+  size
+) {
+  try {
+    const [rows] = await pool.query(
+      `INSERT INTO user_images (userId,imageName, path, mimeType, extension, size) 
+        VALUES (?, ?, ?, ?, ?, ?)`,
+      [userid, imagename, path, mimetype, extension, size]
+    );
+    return rows;
+  } catch (error) {
+    console.error("Error inserting image:", error);
     throw error;
   }
 }

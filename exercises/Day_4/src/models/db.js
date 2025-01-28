@@ -28,7 +28,7 @@ export async function showAll() {
     const [rows] = await pool.query(`SELECT * FROM users;`);
     return rows;
   } catch (error) {
-    console.error("Error inserting new user:", error);
+    console.error("Error in showing all users:", error);
     throw error;
   }
 }
@@ -38,7 +38,7 @@ export async function showUser(id) {
     const [rows] = await pool.query(`SELECT * FROM users WHERE id=?;`, [id]);
     return rows;
   } catch (error) {
-    console.error("Error inserting new user:", error);
+    console.error("Error in showing user:", error);
     throw error;
   }
 }
@@ -70,15 +70,15 @@ export async function updateUser(update_string, id) {
   }
 }
 
-export async function deleteUser(){
+export async function userDelete(id){
   try {
     const [rows] = await pool.query(
-      `UPDATE users SET ${update_string} WHERE id=?`,
+      `DELETE FROM users WHERE id=?`,
       [id]
     );
     return rows;
   } catch (error) {
-    console.error("Error updating user:", error);
+    console.error("Error deleting user:", error);
     throw error;
   }
 }

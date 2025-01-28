@@ -1,11 +1,21 @@
-import { users } from "../../../../constant.js";
+import { userDelete } from "../models/db.js";
 
 export const deleteUser = (req, res) => {
-  let userId = parseInt(req.params.id);
-  let userIndex = users.findIndex((u) => u.id === userId);
-  if (userIndex !== -1) {
-    const message = `User with id:${userId} has been succesfully deleted`;
-    users.splice(userIndex, 1);
-    res.status(200).json({ message: message });
+  async function userdelete() {
+    try {
+      let userId = parseInt(req.params.id);
+      if (userId) {
+        const data = await userDelete(userId);
+        const message = `User with id:${userId} has been successfully deleted`;
+        console.log(data);
+        res.status(200).json({ message: message });
+      } else {
+        res.status(400).json({ message: "Invalid user ID" });
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
   }
+  userdelete();
 };

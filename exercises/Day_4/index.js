@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import userRoutes from "./src/routes/userRoutes.js";
 import logMiddleware from "./src/middlewares/logMiddleware.js";
 import validateId from "./src/middlewares/validateId.js";
-import { upload, upload_file } from "./src/controllers/userController.js";
+import checkFile from "./src/middlewares/fileCheck.js";
+import {upload_file } from "./src/controllers/userController.js";
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ app.use(logMiddleware);
 app.use("/users/:id", validateId);
 app.use("/users", userRoutes);
 
-app.post("/upload/:id", upload.single("uploaded_file"), upload_file);
+app.post("/upload/:id", checkFile, upload_file);
 
 app.get("/", (req, res) => {
   console.log("User connected to the server");

@@ -7,6 +7,9 @@ import { upload_file } from "./upload.js";
 import { getAllUsersProfiles } from "./getAllUserProfiles.js";
 import { addUserProfile } from "./addUserProfile.js";
 import { getUsersProfileById } from "./getUserProfileById.js";
+import { updateprofileid } from "./updateUserProfile.js";
+import { deleteuserprofile } from "./deleteUserProfile.js";
+import { deleteuserimage } from "./deleteUserImage.js";
 export {
   getUserById,
   getAllUsers,
@@ -17,4 +20,7 @@ export {
   getAllUsersProfiles,
   addUserProfile,
   getUsersProfileById,
+  updateprofileid,
+  deleteuserprofile,
+  deleteuserimage,
 };

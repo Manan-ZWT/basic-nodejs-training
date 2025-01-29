@@ -7,6 +7,7 @@ import validateId from "./src/middlewares/validateId.js";
 import { validateprofileid } from "./src/middlewares/validateProfileId.js";
 import checkFile from "./src/middlewares/fileCheck.js";
 import { upload_file } from "./src/controllers/userController.js";
+import { deleteuserimage } from "./src/controllers/userController.js";
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,7 @@ app.use("/users", userRoutes);
 app.use("/user-profile", userProfileRoutes);
 
 app.post("/upload/:id", checkFile, upload_file);
-// app.delete("/user-images/:userId",deleteAllImages )
+app.delete("/user-images/:userId", deleteuserimage);
 
 app.get("/", (req, res) => {
   console.log("User connected to the server");

@@ -10,9 +10,14 @@ export const validateprofileid = async (req, res, next) => {
       return res.status(400).json({
         error: "Bad request from the user, only positive integers are allowed",
       });
-    } else {
+    }
+    else if(req.body.userId && req.method=== "PUT"){
+        return res.status(405).json({
+            error: "You are not allowed to change userId",
+          });
+    }
+    else {
       let valid = await validateProfileId(Id);
-      console.log(valid);
       if (valid) {
         next();
       } else {

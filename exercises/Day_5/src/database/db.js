@@ -12,7 +12,7 @@ export async function showAll() {
 
 export async function showUser(id) {
   try {
-    const [rows] = await pool.query(`SELECT * FROM users WHERE id=?;`, [id]);
+    const [rows] = await pool.query(` SELECT * FROM users INNER JOIN user_profiles ON users.id = user_profiles.userId INNER JOIN user_images ON users.id = user_images.userId WHERE users.id = ?;`, [id]);
     return rows;
   } catch (error) {
     console.error("Error in showing user:", error);
@@ -121,6 +121,36 @@ export async function insertNewUserProfile(
   }
 }
 
+export async function updateProfileId(
+  id,
+  bio,
+  linkedInUrl,
+  facebookUrl,
+  instaUrl
+) {
+  try {
+    const [rows] = await pool.query(
+      `UPDATE user_profiles SET bio=?, linkedInUrl=?, facebookUrl=?, instaUrl=? WHERE id=?`,
+      [bio, linkedInUrl, facebookUrl, instaUrl, id]
+    );
+    console.log("Profile updated successfully");
+  } catch (error) {
+    console.error("Error in updating profile:", error);
+    throw error;
+  }
+}
+
+export async function deleteUserProfile(id) {
+  try {
+    const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id=?`, [
+      id,
+    ]);
+  } catch (error) {
+    console.error("Error in deleting profile:", error);
+    throw error;
+  }
+}
+
 export async function validateProfileId(id) {
   try {
     const [rows] = await pool.query(
@@ -129,13 +159,25 @@ export async function validateProfileId(id) {
     );
 
     if (rows.length > 0) {
-      console.log("Valid profile:", rows);
       return true;
     } else {
       return false;
     }
   } catch (error) {
     console.error("Error in validating user profile:", error);
+    throw error;
+  }
+}
+
+export async function deleteUserImage(id) {
+  try {
+    const [result] = await pool.query(
+      `DELETE FROM user_images WHERE userId = ?`,
+      [id]
+    );
+    return result;
+  } catch (error) {
+    console.error("Error deleting user image:", error);
     throw error;
   }
 }

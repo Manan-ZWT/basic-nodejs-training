@@ -1,7 +1,6 @@
 import { validUser } from "../database/db.js";
 
-const validateId = (req, res, next) => {
-  async function displayUsers() {
+const validateId = async(req, res, next) => {
     try {
       if (
         req.params.id &&
@@ -17,7 +16,6 @@ const validateId = (req, res, next) => {
           });
         } else {
           let valid = await validUser(userId);
-          console.log(valid);
           if (valid) {
             next();
           } else {
@@ -37,8 +35,6 @@ const validateId = (req, res, next) => {
       console.error("Error fetching users:", error);
       res.status(500).json({ message: "Internal server error" });
     }
-  }
-  displayUsers();
-};
+}
 
 export default validateId;

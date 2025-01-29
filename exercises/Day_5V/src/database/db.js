@@ -13,7 +13,7 @@ export async function showAll() {
 export async function showUser(id) {
   try {
     const [rows] = await pool.query(
-      ` SELECT * FROM users INNER JOIN user_profiles ON users.id = user_profiles.userId INNER JOIN user_images ON users.id = user_images.userId WHERE users.id = ?;`,
+      ` SELECT * FROM users LEFT JOIN user_profiles ON users.id = user_profiles.userId LEFT JOIN user_images ON users.id = user_images.userId WHERE users.id = ?;`,
       [id]
     );
     return rows;
@@ -157,7 +157,6 @@ export async function deleteUserProfile(id) {
 export async function validUser(id) {
   try {
     const [rows] = await pool.query(`SELECT 1 FROM users WHERE id = ?`, [id]);
-
     if (rows.length > 0) {
       return true;
     } else {
@@ -165,6 +164,22 @@ export async function validUser(id) {
     }
   } catch (error) {
     console.error("Error in validating user profile:", error);
+    throw error;
+  }
+}
+
+export async function validEmail(email) {
+  try {
+    const [rows] = await pool.query(`SELECT 1 FROM users WHERE email = ?`, [
+      email,
+    ]);
+    if (rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error in checking email from users table", error);
     throw error;
   }
 }
@@ -183,6 +198,24 @@ export async function validateProfileId(id) {
     }
   } catch (error) {
     console.error("Error in validating user profile:", error);
+    throw error;
+  }
+}
+
+export async function validateProfileIdcreate(id) {
+  try {
+    const [rows] = await pool.query(
+      ` SELECT 1 FROM user_profiles INNER JOIN users ON user_profiles.userId= users.id WHERE user_profiles.userId= ?`,
+      [id]
+    );
+
+    if (rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error in validating user: ", error);
     throw error;
   }
 }

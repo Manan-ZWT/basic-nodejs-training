@@ -1,11 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
 import userRoutes from "./src/routes/userRoutes.js";
-import userProfileRoutes from "./src/routes/userProfileRoutes.js"
+import userProfileRoutes from "./src/routes/userProfileRoutes.js";
 import logMiddleware from "./src/middlewares/logMiddleware.js";
 import validateId from "./src/middlewares/validateId.js";
+import { validateprofileid } from "./src/middlewares/validateProfileId.js";
 import checkFile from "./src/middlewares/fileCheck.js";
-import {upload_file } from "./src/controllers/userController.js";
+import { upload_file } from "./src/controllers/userController.js";
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logMiddleware);
 app.use("/users/:id", validateId);
-app.use("/user-profile/:id", validateId);
+app.use("/user-profile/:id", validateprofileid);
 app.use("/users", userRoutes);
 app.use("/user-profile", userProfileRoutes);
 

@@ -88,11 +88,11 @@ export async function showAllUserProfiles() {
   }
 }
 
-export async function showUserProfileById(userId) {
+export async function showUserProfileById(id) {
   try {
     const [rows] = await pool.query(
-      `SELECT user_profiles.userId, users.name, users.email, users.age, user_profiles.bio, users.isActive, user_profiles.linkedInUrl,user_profiles.facebookUrl, user_profiles.instagramUrl, users.createdAt, user_profiles.updatedAtFROM user_profiles INNER JOIN users ON users.id = user_profiles.userId WHERE user_profiles.userId = ?`,
-      [userId]
+      `SELECT user_profiles.userId, users.name, users.email, users.age, user_profiles.bio, users.isActive, user_profiles.linkedInUrl,user_profiles.facebookUrl, user_profiles.instaUrl, users.createdAt, user_profiles.updatedAt FROM user_profiles INNER JOIN users ON users.id = user_profiles.userId WHERE user_profiles.id = ?`,
+      [id]
     );
     return rows;
   } catch (error) {
@@ -117,6 +117,25 @@ export async function insertNewUserProfile(
     return rows;
   } catch (error) {
     console.error("Error in showing all users:", error);
+    throw error;
+  }
+}
+
+export async function validateProfileId(id) {
+  try {
+    const [rows] = await pool.query(
+      `SELECT 1 FROM user_profiles WHERE id = ?`,
+      [id]
+    );
+
+    if (rows.length > 0) {
+      console.log("Valid profile:", rows);
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error in validating user profile:", error);
     throw error;
   }
 }

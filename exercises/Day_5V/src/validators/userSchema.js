@@ -42,10 +42,7 @@ export const userUpdateSchema = yup.object({
     .optional()
     .min(3, "Name must be at least 3 characters")
     .matches(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces"),
-  email: yup
-    .string()
-    .optional()
-    .email("Invalid email format"),
+  email: yup.string().optional().email("Invalid email format"),
   age: yup
     .number()
     .optional()
@@ -56,8 +53,18 @@ export const userUpdateSchema = yup.object({
     .string()
     .optional()
     .oneOf(["Admin", "User"], "Role must be either Admin or User"),
-  isActive: yup
-    .boolean()
-    .optional(),
+  isActive: yup.boolean().optional(),
 });
 
+export const userFormSchema = yup.object({
+  name: yup
+    .string()
+    .required("Name is required")
+    .min(3, "Name must be at least 3 characters")
+    .matches(/^[a-zA-Z\s]+$/, "Name must only contain alphabets and spaces"),
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Invalid email format"),
+  // path: yup.string().url("Invalid path").nullable(),
+});

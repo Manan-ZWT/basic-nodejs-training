@@ -154,6 +154,32 @@ export async function deleteUserProfile(id) {
   }
 }
 
+export async function addUserForm(userId, name, email, path) {
+  try {
+    const [rows] = await pool.query(
+      `INSERT INTO user_forms (userId, name, email, path)
+      VALUES(?, ?, ?, ?)`,
+      [userId, name, email, path]
+    );
+  } catch (error) {
+    console.error("Error in deleting profile:", error);
+    throw error;
+  }
+}
+
+export async function deleteUserImage(id) {
+  try {
+    const [result] = await pool.query(
+      `DELETE FROM user_images WHERE userId = ?`,
+      [id]
+    );
+    return result;
+  } catch (error) {
+    console.error("Error deleting user image:", error);
+    throw error;
+  }
+}
+
 export async function validUser(id) {
   try {
     const [rows] = await pool.query(`SELECT 1 FROM users WHERE id = ?`, [id]);
@@ -216,19 +242,6 @@ export async function validateProfileIdcreate(id) {
     }
   } catch (error) {
     console.error("Error in validating user: ", error);
-    throw error;
-  }
-}
-
-export async function deleteUserImage(id) {
-  try {
-    const [result] = await pool.query(
-      `DELETE FROM user_images WHERE userId = ?`,
-      [id]
-    );
-    return result;
-  } catch (error) {
-    console.error("Error deleting user image:", error);
     throw error;
   }
 }

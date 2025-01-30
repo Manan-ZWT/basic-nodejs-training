@@ -10,6 +10,7 @@ import { getUsersProfileById } from "./getUserProfileById.js";
 import { updateprofileid } from "./updateUserProfile.js";
 import { deleteuserprofile } from "./deleteUserProfile.js";
 import { deleteuserimage } from "./deleteUserImage.js";
+import { adduserform } from "./adduserforms.js";
 export {
   getUserById,
   getAllUsers,
@@ -23,4 +24,5 @@ export {
   updateprofileid,
   deleteuserprofile,
   deleteuserimage,
+  adduserform,
 };

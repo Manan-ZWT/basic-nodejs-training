@@ -6,8 +6,10 @@ import logMiddleware from "./src/middlewares/logMiddleware.js";
 import validateId from "./src/middlewares/validateId.js";
 import { validateprofileid } from "./src/middlewares/validateProfileId.js";
 import checkFile from "./src/middlewares/fileCheck.js";
+import checkFormFile from "./src/middlewares/formFileCheck.js";
 import { upload_file } from "./src/controllers/userController.js";
 import { deleteuserimage } from "./src/controllers/userController.js";
+import { adduserform } from "./src/controllers/userController.js";
 
 dotenv.config();
 const app = express();
@@ -23,6 +25,7 @@ app.use("/user-profile", userProfileRoutes);
 
 app.post("/upload/:id", checkFile, upload_file);
 app.delete("/user-images/:userId", deleteuserimage);
+app.post("/user-forms/:userId", checkFormFile, adduserform);
 
 app.get("/", (req, res) => {
   console.log("User connected to the server");

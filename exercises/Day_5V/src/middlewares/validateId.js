@@ -1,6 +1,8 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { validUser } from "../database/db.js";
 
-const validateId = async(req, res, next) => {
+// CREATING A VALIDATION MIDDLEWARE FOR CHECKING ANY BAD REQUEST FROM THE USER FOR "id" FOR "user" TABLE
+export const validateId = async(req, res, next) => {
     try {
       if (
         req.params.id &&
@@ -37,4 +39,3 @@ const validateId = async(req, res, next) => {
     }
 }
 
-export default validateId;

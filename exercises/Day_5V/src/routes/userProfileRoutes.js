@@ -1,3 +1,4 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import express from "express";
 import {
   getAllUsersProfiles,
@@ -6,6 +7,8 @@ import {
   updateprofileid,
   deleteuserprofile,
 } from "../controllers/userController.js";
+
+// CREATING ROUTES FOR "/user-profile" REQUEST
 const router = express.Router();
 
 router.get("/", getAllUsersProfiles);

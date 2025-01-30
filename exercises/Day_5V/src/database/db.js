@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { pool } from "./config.js";
 
+// QUERY FUNCTION FOR SELECTING ALL USERS FROM "users" TABLE
 export async function showAll() {
   try {
     const [rows] = await pool.query(`SELECT * FROM users;`);
@@ -10,6 +12,7 @@ export async function showAll() {
   }
 }
 
+// QUERY FUNCTION FOR SELECTING USER USING SPECIFIC "id" FROM "users" TABLE
 export async function showUser(id) {
   try {
     const [rows] = await pool.query(
@@ -23,6 +26,7 @@ export async function showUser(id) {
   }
 }
 
+// QUERY FUNCTION FOR INSERITNG NEW USER FOR "users" TABLE
 export async function insertNew(name, email, age, role, isActive) {
   try {
     const [rows] = await pool.query(
@@ -37,6 +41,7 @@ export async function insertNew(name, email, age, role, isActive) {
   }
 }
 
+// QUERY FUNCTION FOR UPDATING USER USING SPECIFIC "id" FOR "users" TABLE
 export async function updateUser(update_string, id) {
   try {
     const [rows] = await pool.query(
@@ -50,6 +55,7 @@ export async function updateUser(update_string, id) {
   }
 }
 
+// QUERY FUNCTION FOR DELETING USER USING SPECIFIC "id" FOR "users" TABLE
 export async function userDelete(id) {
   try {
     const [rows] = await pool.query(`DELETE FROM users WHERE id=?`, [id]);
@@ -60,6 +66,7 @@ export async function userDelete(id) {
   }
 }
 
+// QUERY FUNCTION FOR INSERTING USER IMAGE USING SPECIFIC "userid" FOR "user_images" TABLE
 export async function insertImage(
   userid,
   imagename,
@@ -81,6 +88,7 @@ export async function insertImage(
   }
 }
 
+// QUERY FUNCTION FOR SELECTING ALL USER PROFILES FROM "user_profiles" TABLE
 export async function showAllUserProfiles() {
   try {
     const [rows] = await pool.query(`SELECT * FROM user_profiles;`);
@@ -91,6 +99,7 @@ export async function showAllUserProfiles() {
   }
 }
 
+// QUERY FUNCTION FOR SELECTING USER PROFILE USING SPECIFIC "id" FROM "user_profiles" TABLE
 export async function showUserProfileById(id) {
   try {
     const [rows] = await pool.query(
@@ -104,6 +113,7 @@ export async function showUserProfileById(id) {
   }
 }
 
+// QUERY FUNCTION FOR INSERITNG NEW USER PROFILE FOR "user_profiles" TABLE
 export async function insertNewUserProfile(
   userId,
   bio,
@@ -124,6 +134,7 @@ export async function insertNewUserProfile(
   }
 }
 
+// QUERY FUNCTION FOR UPDATING USER PROFILE USING SPECIFIC "id" FOR "user_profiles" TABLE
 export async function updateProfileId(
   id,
   bio,
@@ -143,6 +154,7 @@ export async function updateProfileId(
   }
 }
 
+// QUERY FUNCTION FOR DELETING USER PROFILE USING SPECIFIC "id" FOR "user_profiles" TABLE
 export async function deleteUserProfile(id) {
   try {
     const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id=?`, [
@@ -154,6 +166,7 @@ export async function deleteUserProfile(id) {
   }
 }
 
+// QUERY FUNCTION FOR INSERITNG NEW USER FORM DATA FOR "user_forms" TABLE
 export async function addUserForm(userId, name, email, path) {
   try {
     const [rows] = await pool.query(
@@ -167,6 +180,7 @@ export async function addUserForm(userId, name, email, path) {
   }
 }
 
+// QUERY FUNCTION DELETING USER IMAGE USING SPECIFIC "userId" FROM "user_images" TABLE
 export async function deleteUserImage(id) {
   try {
     const [result] = await pool.query(
@@ -180,6 +194,7 @@ export async function deleteUserImage(id) {
   }
 }
 
+// QUERY FUNCTION FOR VALIDATING "id" FOR "users" TABLE
 export async function validUser(id) {
   try {
     const [rows] = await pool.query(`SELECT 1 FROM users WHERE id = ?`, [id]);
@@ -194,6 +209,7 @@ export async function validUser(id) {
   }
 }
 
+// QUERY FUNCTION FOR VALIDATING "email" FOR "users" TABLE
 export async function validEmail(email) {
   try {
     const [rows] = await pool.query(`SELECT 1 FROM users WHERE email = ?`, [
@@ -210,6 +226,7 @@ export async function validEmail(email) {
   }
 }
 
+// QUERY FUNCTION FOR VALIDATING "id" FOR "user_profiles" TABLE
 export async function validateProfileId(id) {
   try {
     const [rows] = await pool.query(
@@ -228,6 +245,7 @@ export async function validateProfileId(id) {
   }
 }
 
+// QUERY FUNCTION FOR VALIDATING "id" FOR "user_profiles" TABLE FROM "users" TABLEWHILE CREATING NEW USER PROFILE
 export async function validateProfileIdcreate(id) {
   try {
     const [rows] = await pool.query(

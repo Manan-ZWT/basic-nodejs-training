@@ -1,7 +1,9 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import fs from "fs";
 import path from "path";
 
-const logMiddleware = (req, res, next) => {
+// CREATING LOGGER MIDDLEWARE
+export const logMiddleware = (req, res, next) => {
   if (req.url !== "/favicon.ico") {
     const date = new Date();
     const logMessage = `
@@ -14,12 +16,10 @@ const logMiddleware = (req, res, next) => {
       logMessage,
       (err) => {
         if (err) {
-          return res.status(403).json({"error":"You are not allowed"});
+          return res.status(403).json({ error: "You are not allowed" });
         }
       }
     );
   }
   next();
 };
-
-export default logMiddleware;

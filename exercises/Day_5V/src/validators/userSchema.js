@@ -1,5 +1,7 @@
+// IMPORTING YUP FOR DATA VALIDATION
 import yup from "yup";
 
+// SCHEMA FOR VALIDATING USER DATA WHEN CREATING NEW USER FOR "users" TABLE
 export const userCreateSchema = yup.object({
   name: yup
     .string()
@@ -22,6 +24,7 @@ export const userCreateSchema = yup.object({
   isActive: yup.boolean().required("isActive must be a Boolean value"),
 });
 
+// SCHEMA FOR VALIDATING USER PROFILE DATA WHEN CREATING NEW USER PROFILE FOR "user_profiles" TABLE
 export const userProfileCreateSchema = yup.object({
   userId: yup
     .number()
@@ -36,6 +39,7 @@ export const userProfileCreateSchema = yup.object({
   instaUrl: yup.string().url("Invalid Instagram URL format").nullable(),
 });
 
+// SCHEMA FOR VALIDATING USER DATA WHEN UPDATING EXISTING USER FOR "users" TABLE
 export const userUpdateSchema = yup.object({
   name: yup
     .string()
@@ -56,6 +60,7 @@ export const userUpdateSchema = yup.object({
   isActive: yup.boolean().optional(),
 });
 
+// SCHEMA FOR VALIDATING USER FORM DATA FOR "user_forms" TABLE
 export const userFormSchema = yup.object({
   name: yup
     .string()
@@ -66,5 +71,4 @@ export const userFormSchema = yup.object({
     .string()
     .required("Email is required")
     .email("Invalid email format"),
-  // path: yup.string().url("Invalid path").nullable(),
 });

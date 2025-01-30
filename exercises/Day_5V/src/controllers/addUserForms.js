@@ -23,12 +23,12 @@ export const adduserform = async (req, res) => {
     }
 
     try {
-      const fileExtension = path.extname(req.file.originalname);
-      const data = await addUserForm(userId, name, email, fileExtension);
+      const pathname = req.file.path;
+      const data = await addUserForm(userId, name, email, pathname);
 
       res.status(200).json({
         message: "User form data has been successfully added",
-        data: { userId, name, email, fileExtension },
+        data: { userId, name, email, pathname},
       });
     } catch (error) {
       console.error("Error adding user form:", error);

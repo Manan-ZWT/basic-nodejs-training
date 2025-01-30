@@ -1,3 +1,4 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import express from "express";
 import {
   getUserById,
@@ -7,6 +8,7 @@ import {
   deleteUser,
 } from "../controllers/userController.js";
 
+// CREATING ROUTES FOR "/user" REQUEST
 const router = express.Router();
 
 router.get("/", getAllUsers);

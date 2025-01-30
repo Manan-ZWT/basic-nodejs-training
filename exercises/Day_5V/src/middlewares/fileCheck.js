@@ -1,7 +1,9 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 
+// FILTER FOR FILE TO CHECK FILE TYPE ".jpeg,.jpg,.png"
 const fileFilter = (req, file, cb) => {
   const filetypes = /jpeg|jpg|png/;
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
@@ -14,6 +16,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
+// CONFIGURING DISKSTORAGE FOR MULTER
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (!fs.existsSync("./uploads")) {
@@ -28,13 +31,15 @@ const storage = multer.diskStorage({
   },
 });
 
+// CONFIGURING UPLOAD MIDDLEWARE AND FILE SIZE "2MB" FILTER FOR MULTER
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
   limits: { fileSize: 2 * 1024 * 1024 },
 }).single("uploaded_file");
 
-const checkFile = (req, res, next) => {
+// EXPORTING FUNCTION TO CHECK THE VALIDATION FOR THE FILE
+export const checkFile = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       if (err.code === "LIMIT_FILE_SIZE") {
@@ -52,4 +57,3 @@ const checkFile = (req, res, next) => {
   });
 };
 
-export default checkFile;

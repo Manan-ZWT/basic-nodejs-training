@@ -1,7 +1,9 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import mysql from "mysql2";
 import dotenv from "dotenv";
-dotenv.config();
 
+// CONFIGURING .ENV VARIABLES AND SETTIGN UP THE DATABASE CONNECTION
+dotenv.config();
 export const pool = mysql
   .createPool({
     host: process.env.D5_DB_HOST,
@@ -11,6 +13,7 @@ export const pool = mysql
   })
   .promise();
 
+// QUERY FOR CREATING "users" TABLE
 pool.query(
   `CREATE TABLE IF NOT EXISTS users 
   (id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,6 +26,7 @@ pool.query(
   updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)`
 );
 
+// QUERY FOR CREATING "user_image" TABLE
 pool.query(
   `CREATE TABLE IF NOT EXISTS user_images (
       id INT AUTO_INCREMENT PRIMARY KEY,
@@ -37,6 +41,7 @@ pool.query(
       );`
 );
 
+// QUERY FOR CREATING "user_profiles" TABLE
 pool.query(
   `CREATE TABLE IF NOT EXISTS user_profiles (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -51,6 +56,7 @@ pool.query(
     );`
 );
 
+// QUERY FOR CREATING "user_forms" TABLE
 pool.query(
   `CREATE TABLE IF NOT EXISTS user_forms (
     id INT AUTO_INCREMENT PRIMARY KEY,

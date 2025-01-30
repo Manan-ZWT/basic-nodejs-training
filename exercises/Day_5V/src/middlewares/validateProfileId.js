@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { validateProfileId } from "../database/db.js";
 
+// CREATING A VALIDATION MIDDLEWARE FOR CHECKING ANY BAD REQUEST FROM THE USER FOR "userid" FOR "user_profile" TABLE
 export const validateprofileid = async (req, res, next) => {
   if (
     req.params.id &&

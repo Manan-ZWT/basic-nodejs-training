@@ -20,7 +20,7 @@ dotenv.config();
 const app = express();
 const port = process.env.D5_APP_PORT;
 
-sequelize.sync({ alter: true });
+// sequelize.sync({ alter: true });
 
 // MIDDLEWARES
 app.use(express.json());

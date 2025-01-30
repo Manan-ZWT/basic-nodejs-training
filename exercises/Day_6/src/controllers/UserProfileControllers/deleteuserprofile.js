@@ -8,7 +8,7 @@ export const deleteuserprofile = async (req, res) => {
     const row = await deleteUserProfile(id);
     if (row) {
       res.status(200).json({
-        message: `User profile with id: ${id}has been successfully deletef`,
+        message: `User profile with id: ${id} has been successfully deletef`,
       });
     }
   } catch (error) {

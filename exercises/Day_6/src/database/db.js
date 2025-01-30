@@ -101,11 +101,26 @@ export async function insertImage(
   }
 }
 
+// QUERY FUNCTION DELETING USER IMAGE USING SPECIFIC "userId" FROM "user_images" TABLE
+export async function deleteUserImage(id) {
+  UserImage.sync({ alter: true });
+  try {
+    const result = await UserImage.destroy({
+      where: { userId: id },
+    });
+
+    return result;
+  } catch (error) {
+    console.error("Error deleting user image:", error);
+    throw error;
+  }
+}
+
 // QUERY FUNCTION FOR SELECTING ALL USER PROFILES FROM "user_profiles" TABLE
 export async function showAllUserProfiles() {
   UserProfile.sync({ alter: true });
   try {
-    const [rows] = await UserProfile.findAll();
+    const rows = await UserProfile.findAll();
     return rows;
   } catch (error) {
     console.error("Error in showing all user profiles:", error);
@@ -115,6 +130,7 @@ export async function showAllUserProfiles() {
 
 // QUERY FUNCTION FOR SELECTING USER PROFILE USING SPECIFIC "id" FROM "user_profiles" TABLE
 export async function showUserProfileById(id) {
+  UserProfile.sync({ alter: true });
   try {
     const userprofile = await UserProfile.findOne({
       where: { id },
@@ -134,6 +150,7 @@ export async function insertNewUserProfile(
   facebookUrl,
   instaUrl
 ) {
+  UserProfile.sync({ alter: true });
   try {
     const rows = UserProfile.create({
       userId: userId,
@@ -157,10 +174,16 @@ export async function updateProfileId(
   facebookUrl,
   instaUrl
 ) {
+  UserProfile.sync({ alter: true });
   try {
-    const [rows] = await pool.query(
-      `UPDATE user_profiles SET bio=?, linkedInUrl=?, facebookUrl=?, instaUrl=? WHERE id=?`,
-      [bio, linkedInUrl, facebookUrl, instaUrl, id]
+    const rows = await UserProfile.update(
+      {
+        bio: bio,
+        linkedInUrl: linkedInUrl,
+        facebookUrl: facebookUrl,
+        instaUrl: instaUrl,
+      },
+      { where: { id } }
     );
     console.log("Profile updated successfully");
   } catch (error) {
@@ -171,10 +194,12 @@ export async function updateProfileId(
 
 // QUERY FUNCTION FOR DELETING USER PROFILE USING SPECIFIC "id" FOR "user_profiles" TABLE
 export async function deleteUserProfile(id) {
+  UserProfile.sync({ alter: true });
   try {
-    const [rows] = await pool.query(`DELETE FROM user_profiles WHERE id=?`, [
-      id,
-    ]);
+    const rows = await UserProfile.destroy({
+      where: { id },
+    });
+    return rows;
   } catch (error) {
     console.error("Error in deleting profile:", error);
     throw error;
@@ -191,20 +216,6 @@ export async function addUserForm(userId, name, email, path) {
     );
   } catch (error) {
     console.error("Error in deleting profile:", error);
-    throw error;
-  }
-}
-
-// QUERY FUNCTION DELETING USER IMAGE USING SPECIFIC "userId" FROM "user_images" TABLE
-export async function deleteUserImage(id) {
-  try {
-    const [result] = await pool.query(
-      `DELETE FROM user_images WHERE userId = ?`,
-      [id]
-    );
-    return result;
-  } catch (error) {
-    console.error("Error deleting user image:", error);
     throw error;
   }
 }

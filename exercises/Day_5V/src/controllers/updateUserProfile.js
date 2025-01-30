@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { updateProfileId } from "../database/db.js";
 
+// FUNCTION TO UPDATE PROFILE USING "id" FOR "user_profiles" TABLE
 export const updateprofileid = async (req, res) => {
   try {
     let id = parseInt(req.params.id);

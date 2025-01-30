@@ -1,7 +1,9 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { addUserForm, validUser } from "../database/db.js";
 import { userFormSchema } from "../validators/userSchema.js";
 import path from "path";
 
+// FUNCTION TO ADD NEW USER FORM DATA WITH PDF IN "user_forms" TABLE
 export const adduserform = async (req, res) => {
   try {
     const userId= req.params.userId;

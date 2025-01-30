@@ -1,3 +1,4 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { getUserById } from "./getUserById.js";
 import { getAllUsers } from "./getAllUsers.js";
 import { addUser } from "./addUser.js";
@@ -11,6 +12,8 @@ import { updateprofileid } from "./updateUserProfile.js";
 import { deleteuserprofile } from "./deleteUserProfile.js";
 import { deleteuserimage } from "./deleteUserImage.js";
 import { adduserform } from "./adduserforms.js";
+
+// EXPORTING ALL CONTROLLERS
 export {
   getUserById,
   getAllUsers,

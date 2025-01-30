@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { deleteUserProfile } from "../database/db.js";
 
+// FUNCTION TO DELETE USER PROFILE FROM "user_profiles" TABLE
 export const deleteuserprofile = async (req, res) => {
   try {
     let id = parseInt(req.params.id);

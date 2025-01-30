@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { showAll } from "../database/db.js";
 
+// FUNCTION TO GET ALL USERS FROM "users" TABLE
 export const getAllUsers = (req, res) => {
   async function displayUsers() {
     try {

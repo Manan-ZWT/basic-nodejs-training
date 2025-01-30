@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { showAllUserProfiles } from "../database/db.js";
 
+// FUNCTION TO GET ALL USER PROFILES FROM "user_profiles" TABLE
 export const getAllUsersProfiles = async (req, res) => {
   try {
     const data = await showAllUserProfiles();

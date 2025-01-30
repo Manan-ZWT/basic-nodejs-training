@@ -1,6 +1,8 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { insertNew, validEmail } from "../database/db.js";
 import { userCreateSchema } from "../validators/userSchema.js";
 
+// FUNCTION TO ADD NEW USER IN "users" TABLE
 export const addUser = async (req, res) => {
   try {
     const { name, email, age, role, isActive } = req.body;

@@ -1,6 +1,8 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import path from "path";
 import { showAll, insertImage } from "../database/db.js";
 
+// FUNCTION TO UPLOAD IMAGE FILE FOR "user_images" TABLE
 export const upload_file = (req, res) => {
   async function handleFileUpload() {
     try {

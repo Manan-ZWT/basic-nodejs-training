@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { userDelete } from "../database/db.js";
 
+// FUNCTION TO DELETE USER FROM "users" TABLE
 export const deleteUser = (req, res) => {
   async function userdelete() {
     try {

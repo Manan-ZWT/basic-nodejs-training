@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { showUser } from "../database/db.js";
 
+// FUNCTION TO GET USER BY ID FROM "users" TABLE
 export const getUserById = async (req, res) => {
   try {
     const userId = parseInt(req.params.id);

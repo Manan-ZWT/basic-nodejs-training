@@ -1,9 +1,11 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import {
   insertNewUserProfile,
   validateProfileIdcreate,
 } from "../database/db.js";
 import { userProfileCreateSchema } from "../validators/userSchema.js";
 
+// FUNCTION TO ADD NEW USER PROFILE IN "user_profiles" TABLE
 export const addUserProfile = async (req, res) => {
   try {
     let { userId, bio, linkedInUrl, facebookUrl, instaUrl } = req.body;

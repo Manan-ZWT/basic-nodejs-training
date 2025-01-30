@@ -1,5 +1,7 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { deleteUserImage } from "../database/db.js";
 
+// FUNCTION TO DELETE USER IMAGE FROM "user_images" TABLE
 export const deleteuserimage = async (req, res) => {
   try {
     let userid = parseInt(req.params.userId);

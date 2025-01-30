@@ -1,6 +1,8 @@
+// IMPORTING REQUIRED MODULES AND FILES
 import { validUser, validEmail, updateUser } from "../database/db.js";
 import { userUpdateSchema } from "../validators/userSchema.js";
 
+// FUNCTION TO UPDATE USER FOR "users" TABLE
 export const userUpdate = async (req, res) => {
   try {
     const { name, email, age, role, isActive } = req.body;

@@ -12,7 +12,7 @@ import { updateprofileid } from "./UserProfileControllers/updateUserProfile.js";
 import { deleteuserprofile } from "./UserProfileControllers/deleteuserprofile.js";
 import { deleteuserimage } from "./UserImageControllers/deleteUserImage.js";
 import { adduserform } from "./UserFormControllers/addUserForms.js";
-import userlogin from "./UserControllers/login.js"
+import { userlogin } from "./UserControllers/login.js";
 // EXPORTING ALL CONTROLLERS
 export {
   getUserById,
@@ -28,5 +28,5 @@ export {
   deleteuserprofile,
   deleteuserimage,
   adduserform,
-  userlogin
+  userlogin,
 };

@@ -1,6 +1,7 @@
 // import { loginuser } from "../../database/db";
-import { User } from "../../models/usersModel";
+import { User } from "../../models/usersModel.js";
 import bcrypt from "bcryptjs";
+
 export const userlogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -10,7 +11,7 @@ export const userlogin = async (req, res) => {
     if (user) {
       const passwordverify = bcrypt.compareSync(password, user.password);
       if (passwordverify) {
-        return user;
+        return res.status(200).json({ message: "Succesfully login" });
       } else {
         return res.status(401).json({
           error: "Incorrect Password",

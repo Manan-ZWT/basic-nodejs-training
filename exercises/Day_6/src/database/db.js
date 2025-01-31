@@ -3,10 +3,11 @@
 import { User } from "../models/usersModel.js";
 import { UserImage } from "../models/usersImagesModel.js";
 import { UserProfile } from "../models/userProfileModel.js";
+import { Model } from "sequelize";
 
 // QUERY FUNCTION FOR SELECTING ALL USERS FROM "users" TABLE
 export async function showAll() {
-  User.sync({ alter: true });
+  // User.sync({ alter: true });
   try {
     const users = await User.findAll();
     return users;
@@ -18,9 +19,24 @@ export async function showAll() {
 
 // QUERY FUNCTION FOR SELECTING USER USING SPECIFIC "id" FROM "users" TABLE
 export async function showUser(id) {
-  User.sync({ alter: true });
+  // User.sync({ alter: true });
   try {
-    const user = await User.findByPk(id);
+    const user = await User.findByPk(id, {
+      include: [
+        {
+          model: UserProfile,
+          attributes: ["bio", "linkedInUrl", "facebookUrl", "instaUrl"],
+          where: [{ userId: id }],
+          required: false,
+        },
+        {
+          model: UserImage,
+          attributes: ["imageName", "path", "mimeType", "extension", "size"],
+          where: [{ userId: id }],
+          required: false,
+        },
+      ],
+    });
     return user;
   } catch (error) {
     console.error("Error in showing user:", error);
@@ -30,7 +46,7 @@ export async function showUser(id) {
 
 // QUERY FUNCTION FOR INSERITNG NEW USER FOR "users" TABLE
 export async function insertNew(name, email, age, role, isActive) {
-  User.sync({ alter: true });
+  // User.sync({ alter: true });
   try {
     const data = await User.create({
       name: name,
@@ -48,7 +64,7 @@ export async function insertNew(name, email, age, role, isActive) {
 
 // QUERY FUNCTION FOR UPDATING USER USING SPECIFIC "id" FOR "users" TABLE
 export async function updateUser(updateFields, id) {
-  User.sync({ alter: true });
+  // User.sync({ alter: true });
   try {
     const [rows] = await User.update(updateFields, {
       where: { id },
@@ -63,7 +79,7 @@ export async function updateUser(updateFields, id) {
 
 // QUERY FUNCTION FOR DELETING USER USING SPECIFIC "id" FOR "users" TABLE
 export async function userDelete(id) {
-  User.sync({ alter: true });
+  // User.sync({ alter: true });
   try {
     const rows = await User.destroy({
       where: { id },
@@ -84,7 +100,7 @@ export async function insertImage(
   extension,
   size
 ) {
-  UserImage.sync({ alter: true });
+  // UserImage.sync({ alter: true });
   try {
     const rows = await UserImage.create({
       userId: userid,
@@ -103,7 +119,7 @@ export async function insertImage(
 
 // QUERY FUNCTION DELETING USER IMAGE USING SPECIFIC "userId" FROM "user_images" TABLE
 export async function deleteUserImage(id) {
-  UserImage.sync({ alter: true });
+  // UserImage.sync({ alter: true });
   try {
     const result = await UserImage.destroy({
       where: { userId: id },
@@ -118,7 +134,7 @@ export async function deleteUserImage(id) {
 
 // QUERY FUNCTION FOR SELECTING ALL USER PROFILES FROM "user_profiles" TABLE
 export async function showAllUserProfiles() {
-  UserProfile.sync({ alter: true });
+  // UserProfile.sync({ alter: true });
   try {
     const rows = await UserProfile.findAll();
     return rows;
@@ -130,7 +146,7 @@ export async function showAllUserProfiles() {
 
 // QUERY FUNCTION FOR SELECTING USER PROFILE USING SPECIFIC "id" FROM "user_profiles" TABLE
 export async function showUserProfileById(id) {
-  UserProfile.sync({ alter: true });
+  // UserProfile.sync({ alter: true });
   try {
     const userprofile = await UserProfile.findOne({
       where: { id },
@@ -150,7 +166,7 @@ export async function insertNewUserProfile(
   facebookUrl,
   instaUrl
 ) {
-  UserProfile.sync({ alter: true });
+  // UserProfile.sync({ alter: true });
   try {
     const rows = UserProfile.create({
       userId: userId,
@@ -174,7 +190,7 @@ export async function updateProfileId(
   facebookUrl,
   instaUrl
 ) {
-  UserProfile.sync({ alter: true });
+  // UserProfile.sync({ alter: true });
   try {
     const rows = await UserProfile.update(
       {
@@ -194,7 +210,7 @@ export async function updateProfileId(
 
 // QUERY FUNCTION FOR DELETING USER PROFILE USING SPECIFIC "id" FOR "user_profiles" TABLE
 export async function deleteUserProfile(id) {
-  UserProfile.sync({ alter: true });
+  // UserProfile.sync({ alter: true });
   try {
     const rows = await UserProfile.destroy({
       where: { id },

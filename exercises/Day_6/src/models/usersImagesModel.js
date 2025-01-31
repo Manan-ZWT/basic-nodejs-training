@@ -12,7 +12,6 @@ export const UserImage = sequelize.define(
         key: "id",
       },
       onDelete: "CASCADE",
-      onUpdate: "CASCADE",
     },
     imageName: {
       type: DataTypes.STRING(255),
@@ -43,5 +42,8 @@ export const UserImage = sequelize.define(
   }
 );
 
-User.hasMany(UserImage, { foreignKey: "userId" });
+User.hasMany(UserImage, {
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+});
 UserImage.belongsTo(User, { foreignKey: "userId" });

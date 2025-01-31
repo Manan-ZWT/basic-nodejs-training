@@ -12,7 +12,6 @@ export const UserProfile = sequelize.define(
         key: "id",
       },
       onDelete: "CASCADE",
-      onUpdate: "CASCADE",
     },
     bio: {
       type: DataTypes.TEXT,
@@ -20,7 +19,6 @@ export const UserProfile = sequelize.define(
     },
     linkedInUrl: {
       type: DataTypes.STRING(255),
-      unique: true,
       allowNull: false,
     },
     facebookUrl: {
@@ -38,5 +36,8 @@ export const UserProfile = sequelize.define(
   }
 );
 
-User.hasOne(UserProfile, { foreignKey: "userId" });
+User.hasOne(UserProfile, {
+  foreignKey: "userId",
+  onDelete: "CASCADE",
+});
 UserProfile.belongsTo(User, { foreignKey: "userId" });

@@ -14,13 +14,19 @@ import {
   adduserform,
 } from "./src/controllers/mainController.js";
 import { dbConnect, sequelize } from "./src/database/config.js";
+import { UserProfile } from "./src/models/userProfileModel.js";
+import { UserImage } from "./src/models/usersImagesModel.js";
+import { User } from "./src/models/usersModel.js";
 
 // CONFIGURING .ENV VARIABLES
 dotenv.config();
 const app = express();
 const port = process.env.D5_APP_PORT;
 
-// sequelize.sync({ alter: true });
+// UserProfile.sync({ alter: true });
+(async () => {
+  await sequelize.sync({ force: true });
+})();
 
 // MIDDLEWARES
 app.use(express.json());

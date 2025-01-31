@@ -12,15 +12,15 @@ import {
   upload_file,
   deleteuserimage,
   adduserform,
+  addUser,
 } from "./src/controllers/mainController.js";
 import { dbConnect, sequelize } from "./src/database/config.js";
 
 // CONFIGURING .ENV VARIABLES
 dotenv.config();
 const app = express();
-const port = process.env.D5_APP_PORT;
+const port = process.env.D7_APP_PORT;
 
-// UserProfile.sync({ alter: true });
 (async () => {
   await sequelize.sync({ alter: true });
 })();
@@ -35,6 +35,8 @@ app.use("/users", userRoutes);
 app.use("/user-profile", userProfileRoutes);
 
 // EXTRA ENDPOINT WITHOUT SPECIFC ROUTERS
+app.post("/signup",addUser)
+app.post("/login",)
 app.post("/upload/:id", checkFile, upload_file);
 app.delete("/user-images/:userId", deleteuserimage);
 app.post("/user-forms/:userId", checkFormFile, adduserform);

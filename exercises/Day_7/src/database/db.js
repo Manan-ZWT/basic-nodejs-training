@@ -1,10 +1,7 @@
 // IMPORTING REQUIRED MODULES AND FILES
-// import { pool } from "./config.js";
 import { User } from "../models/usersModel.js";
 import { UserImage } from "../models/usersImagesModel.js";
 import { UserProfile } from "../models/userProfileModel.js";
-import bcrypt from "bcryptjs";
-import { Model } from "sequelize";
 
 // QUERY FUNCTION FOR SELECTING ALL USERS FROM "users" TABLE
 export async function showAll() {

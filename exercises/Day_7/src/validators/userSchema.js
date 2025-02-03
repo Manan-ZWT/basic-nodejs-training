@@ -32,7 +32,7 @@ export const userCreateSchema = yup.object({
     ),
 });
 
-//SCHEMA FOR VALIDATING EMAILA AND PASSWORD WHILE LOGIN
+//SCHEMA FOR VALIDATING EMAIL AND PASSWORD WHILE LOGIN
 export const userLoginSchema = yup.object({
   email: yup
     .string()

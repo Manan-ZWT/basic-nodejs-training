@@ -1,13 +1,21 @@
 // IMPORTING REQUIRED MODULES AND FILES
 import { validUser, validEmail, updateUser } from "../../database/db.js";
 import { userUpdateSchema } from "../../validators/userSchema.js";
+import jwt from "jsonwebtoken";
 
 // FUNCTION TO UPDATE USER FOR "users" TABLE
 export const userUpdate = async (req, res) => {
   try {
     const { name, email, age, role, isActive, password } = req.body;
     const userId = parseInt(req.params.id);
-
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[2];
+    let decodedId = jwt.decode(token);
+    if (userId !== parseInt(decodedId.id)) {
+      return res.status(403).send({
+        messsage: "Invalid user ID, You can change your information only",
+      });
+    }
     const user = await validUser(userId);
     if (!user) {
       return res

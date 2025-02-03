@@ -1,0 +1,28 @@
+{
+"workbench.colorCustomizations": {
+  "terminal.background": "#000000",
+  "terminal.foreground": "#FFCC00",
+  "terminalCursor.foreground": "#FFCC00",
+  "terminalCursor.background": "#000000"
+}
+
+// "workbench.colorCustomizations": {
+//   "terminal.background": "#000000",
+//   "terminal.foreground": "#33FF00",
+//   "terminalCursor.foreground": "#33FF00",
+//   "terminalCursor.background": "#000000"
+// }
+
+// "workbench.colorCustomizations": {
+//   "terminal.background": "#40318D",
+//   "terminal.foreground": "#70A4B2",
+//   "terminalCursor.foreground": "#FFFFFF"
+// }
+
+// "workbench.colorCustomizations": {
+//   "terminal.background": "#0000AA",
+//   "terminal.foreground": "#FFFFFF",
+//   "terminalCursor.foreground": "#FFFF00"
+// }
+
+}

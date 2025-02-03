@@ -6,10 +6,11 @@ import {
   userUpdate,
   deleteUser,
 } from "../controllers/mainController.js";
+import { verifyToken } from "../middlewares/jwtAuth.js";
 
 // CREATING ROUTES FOR "/user" REQUEST
 const router = express.Router();
-
+router.use(verifyToken)
 router.get("/", getAllUsers);
 router.get("/:id", getUserById);
 router.patch("/:id", userUpdate);

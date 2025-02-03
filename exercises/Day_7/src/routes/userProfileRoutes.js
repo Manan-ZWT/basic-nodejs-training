@@ -7,10 +7,11 @@ import {
   updateprofileid,
   deleteuserprofile,
 } from "../controllers/mainController.js";
+import { verifyToken } from "../middlewares/jwtAuth.js";
 
 // CREATING ROUTES FOR "/user-profile" REQUEST
 const router = express.Router();
-
+router.use(verifyToken)
 router.get("/", getAllUsersProfiles);
 router.get("/:id", getUsersProfileById);
 router.post("/", addUserProfile);

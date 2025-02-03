@@ -22,11 +22,30 @@ export const userCreateSchema = yup.object({
     .oneOf(["Admin", "User"], "Not a valid role, enter a valid role")
     .required("Role is required"),
   isActive: yup.boolean().required("isActive must be a Boolean value"),
-  password:yup
-  .string()
-  .required("Password is required")
-  .min(8, "Password must be at least 8 characters")
-  .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/, "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/,
+      "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"
+    ),
+});
+
+//SCHEMA FOR VALIDATING EMAILA AND PASSWORD WHILE LOGIN
+export const userLoginSchema = yup.object({
+  email: yup
+    .string()
+    .required("Email is required")
+    .email("Invalid email format"),
+  password: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/,
+      "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"
+    ),
 });
 
 // SCHEMA FOR VALIDATING USER PROFILE DATA WHEN CREATING NEW USER PROFILE FOR "user_profiles" TABLE
@@ -63,11 +82,14 @@ export const userUpdateSchema = yup.object({
     .optional()
     .oneOf(["Admin", "User"], "Role must be either Admin or User"),
   isActive: yup.boolean().optional(),
-  password:yup
-  .string()
-  .optional()
-  .min(8, "Password must be at least 8 characters")
-  .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/, "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"),
+  password: yup
+    .string()
+    .optional()
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/,
+      "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"
+    ),
 });
 
 // SCHEMA FOR VALIDATING USER FORM DATA FOR "user_forms" TABLE

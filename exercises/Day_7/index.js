@@ -3,18 +3,19 @@ import express from "express";
 import dotenv from "dotenv";
 import userRoutes from "./src/routes/userRoutes.js";
 import userProfileRoutes from "./src/routes/userProfileRoutes.js";
+import otherRoutes from "./src/routes/otherRoutes.js";
 import { logMiddleware } from "./src/middlewares/logMiddleware.js";
 import { validateId } from "./src/middlewares/validateId.js";
 import { validateprofileid } from "./src/middlewares/validateProfileId.js";
-import { checkFile } from "./src/middlewares/fileCheck.js";
-import { checkFormFile } from "./src/middlewares/formFileCheck.js";
-import {
-  upload_file,
-  deleteuserimage,
-  adduserform,
-  addUser,
-  userlogin,
-} from "./src/controllers/mainController.js";
+// import { checkFile } from "./src/middlewares/fileCheck.js";
+// import { checkFormFile } from "./src/middlewares/formFileCheck.js";
+// import {
+//   upload_file,
+//   deleteuserimage,
+//   adduserform,
+//   addUser,
+//   userlogin,
+// } from "./src/controllers/mainController.js";
 import { dbConnect, sequelize } from "./src/database/config.js";
 
 // CONFIGURING .ENV VARIABLES
@@ -34,13 +35,14 @@ app.use("/users/:id", validateId);
 app.use("/user-profile/:id", validateprofileid);
 app.use("/users", userRoutes);
 app.use("/user-profile", userProfileRoutes);
+app.use("/", otherRoutes);
 
 // EXTRA ENDPOINT WITHOUT SPECIFC ROUTERS
-app.post("/signup", addUser);
-app.post("/login", userlogin);
-app.post("/upload/:id", checkFile, upload_file);
-app.delete("/user-images/:userId", deleteuserimage);
-app.post("/user-forms/:userId", checkFormFile, adduserform);
+// app.post("/signup", addUser);
+// app.post("/login", userlogin);
+// app.post("/upload/:id", checkFile, upload_file);
+// app.delete("/user-images/:userId", deleteuserimage);
+// app.post("/user-forms/:userId", checkFormFile, adduserform);
 
 // MAIN END POINT
 app.get("/", (req, res) => {

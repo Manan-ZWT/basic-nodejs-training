@@ -5,7 +5,6 @@ import { showAll } from "../../database/db.js";
 export const getAllUsers = async (req, res) => {
   try {
     const users = await showAll();
-
     const validRoles = ["Admin", "User"];
     if (users.length === 0) {
       res.status(404).json({ error: "No users found" });

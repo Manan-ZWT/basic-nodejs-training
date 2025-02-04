@@ -1,0 +1,95 @@
+import { User } from "../models/usersModel.js";
+import {
+  loginUserSchema,
+  registerNewUserSchema,
+} from "../validators/userValidator.js";
+import { validEmail } from "../validators/smallValidators.js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { secretKey } from "../config/config.js";
+
+export const registerNewUser = async (req, res) => {
+  try {
+    let { first_name, last_name, email, password, role } = req.body;
+    console.log(role);
+    try {
+      await registerNewUserSchema.validate({
+        first_name,
+        last_name,
+        email,
+        password,
+        role,
+      });
+    } catch (validationError) {
+      return res.status(406).json({ error: validationError.message });
+    }
+    const emailExists = await validEmail(email);
+    if (emailExists) {
+      return res.status(403).json({
+        error: `User with the same email: ${email} already exists.`,
+      });
+    }
+    const data = await User.create({
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      password: password,
+      role: role,
+    });
+    res.status(200).json({
+      message: "You have been succesfully registered",
+      data: `${first_name}, ${last_name}, ${email}, ${role.toLowerCase()}`,
+    });
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const userLogin = async (req, res) => {
+  try {
+    let { email, password } = req.body;
+    try {
+      await loginUserSchema.validate({
+        email,
+        password,
+      });
+    } catch (validationError) {
+      return res.status(406).json({ error: validationError.message });
+    }
+    const emailExists = await validEmail(email);
+    if (!emailExists) {
+      return res.status(404).json({
+        error: `User with the email: ${email} not founded`,
+        messsage: `Please register yourself to become a member`,
+      });
+    } else {
+      const user = await User.findOne({ where: { email: email } });
+      const passwordverify = bcrypt.compareSync(password, user.password);
+      if (passwordverify) {
+        const token = jwt.sign(
+          { id: user.id, email: user.email, role: user.role },
+          secretKey,
+          {
+            expiresIn: "1h",
+          },
+          {
+            algorithm: "RS256",
+          }
+        );
+        return res.status(200).json({
+          message: "Succesfully login",
+          token: token,
+          data: `Name: ${user.first_name} ${user.last_name}, Email: ${user.email}, Role: ${user.role}`,
+        });
+      } else {
+        return res.status(401).json({
+          error: "Incorrect Password",
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Error adding user:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

@@ -25,4 +25,7 @@
 //   "terminalCursor.foreground": "#FFFF00"
 // }
 
+"terminal.integrated.fontSize": 18,
+"terminal.integrated.lineHeight": 1.4
+
 }

@@ -1,0 +1,47 @@
+import { DataTypes } from "sequelize";
+import { sequelize } from "./index.js";
+import bcrypt from "bcryptjs";
+
+export const User = sequelize.define(
+  "User",
+  {
+    first_name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    last_name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING(255),
+      unique: true,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
+      set(value) {
+        if (value) {
+          const hash = bcrypt.hashSync(value, 10);
+          this.setDataValue("password", hash);
+        }
+      },
+    },
+    role: {
+      type: DataTypes.ENUM("admin", "customer"),
+      allowNull: false,
+      defaultValue: "customer",
+      set(value) {
+        if (value) {
+          this.setDataValue("role", value.toLowerCase());
+        }
+      },
+    },
+  },
+  {
+    tableName: "users",
+    timestamps: true,
+  }
+);
+

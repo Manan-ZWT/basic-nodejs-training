@@ -10,16 +10,20 @@
     "day-5": "node exercises/Day_5/index.js",
     "day-5V": "node exercises/Day_5V/index.js",
     "day-6": "node exercises/Day_6/index.js",
-    "day-7": "node exercises/Day_7/index.js"
+    "day-7": "node exercises/Day_7/index.js",
+    "ecommerce": "node exercises/Ecommerce_Application-Evaluation_Test/index.js"
   },
   "type": "module",
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@faker-js/faker": "^9.4.0",
     "bcryptjs": "^2.4.3",
+    "chance": "^1.1.12",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "faker": "^5.5.3",
     "jsonwebtoken": "^9.0.2",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.12.0",

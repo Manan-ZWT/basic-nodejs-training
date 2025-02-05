@@ -9,6 +9,12 @@ export const addToCart = async (req, res) => {
   let { user_id, product_id, quantity } = req.body;
   try {
     try {
+      const data = await Product.findByPk(product_id);
+      if (data.stock < quantity) {
+        return res.status(409).json({
+          message: `Not enough stock available for the selected item: ${data.name}`,
+        });
+      }
       await addtoCart.validate({
         user_id,
         product_id,

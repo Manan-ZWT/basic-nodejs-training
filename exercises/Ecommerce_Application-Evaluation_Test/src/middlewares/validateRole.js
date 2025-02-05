@@ -5,8 +5,9 @@ export const verifyRole = (...roles) => {
   return (req, res, next) => {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[2];
-    let decodedmsg = jwt.verify(token, secretKey);
+    const decodedmsg = jwt.verify(token, secretKey);
     if (roles.includes(decodedmsg.role)) {
+      console.log(decodedmsg.role);
       next();
     } else {
       res.status(403).json({ error: "Access denied" });

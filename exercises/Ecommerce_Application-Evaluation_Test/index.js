@@ -9,8 +9,9 @@ import { port } from "./src/config/config.js";
 // import { Order } from "./src/models/ordersModel.js";
 // import { Order_item } from "./src/models/order_itemsModel.js";
 // import { Wishlist } from "./src/models/wishlist.js";
-import authRouter from "./src/routes/userAuthRoutes.js"
-import userRouter from "./src/routes/userRoutes.js"
+import authRouter from "./src/routes/userAuthRoutes.js";
+import userRouter from "./src/routes/userRoutes.js";
+import categoryRouter from "./src/routes/categoriesRoutes.js"
 // CONFIGURING EXPRESS APP
 const app = express();
 
@@ -22,7 +23,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRouter);
-app.use("/api/users",userRouter)
+app.use("/api/users", userRouter);
+app.use("/api", categoryRouter);
 
 // MAIN END POINT
 app.get("/", (req, res) => {

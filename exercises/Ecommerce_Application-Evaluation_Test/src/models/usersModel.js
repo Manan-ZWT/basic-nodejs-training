@@ -15,7 +15,6 @@ export const User = sequelize.define(
     },
     email: {
       type: DataTypes.STRING(255),
-      unique: true,
       allowNull: false,
     },
     password: {
@@ -42,6 +41,12 @@ export const User = sequelize.define(
   {
     tableName: "users",
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["email"],
+        name: "unique_email_index",
+      },
+    ],
   }
 );
-

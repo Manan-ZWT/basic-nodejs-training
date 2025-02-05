@@ -1,6 +1,5 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
-import { Category } from "./categoriesModel.js";
 import { User } from "./usersModel.js";
 import { Product } from "./productsModel.js";
 
@@ -12,7 +11,7 @@ export const Cart = sequelize.define(
       references: {
         model: User,
         key: "id",
-        onDelete:"CASCADE"
+        onDelete: "CASCADE",
       },
     },
     product_id: {
@@ -41,5 +40,9 @@ Cart.belongsTo(User, {
   onDelete: "CASCADE",
 });
 
-Cart.hasMany(Product);
-Product.hasOne(Cart);
+Cart.hasMany(Product, {
+  onDelete: "CASCADE",
+});
+Product.hasOne(Cart, {
+  onDelete: "CASCADE",
+});

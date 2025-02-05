@@ -9,9 +9,11 @@ export const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Access denied. Token missing." });
   }
 
-  const decoded_data =jwt.verify(token, secretKey, (err, user) => {
+  const decoded_data = jwt.verify(token, secretKey, (err, user) => {
     if (err) {
-      return res.status(403).json({ message: "Invalid or expired token." });
+      return res
+        .status(403)
+        .json({ message: "Invalid or expired token.Please Login again." });
     }
     next();
   });

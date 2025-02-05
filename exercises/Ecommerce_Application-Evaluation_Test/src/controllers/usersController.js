@@ -13,13 +13,13 @@ export const getUserProfile = async (req, res) => {
     const id = parseInt(decodedmsg.id);
 
     const data = await User.findByPk(id);
-    res.status(200).json({
+    return res.status(200).json({
       message: `User data of id: ${id} has been succesfully fetched`,
       data: data,
     });
   } catch (error) {
     console.error("Error finding user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -62,26 +62,26 @@ export const updateUserProfile = async (req, res) => {
       };
       await User.update(update_query, { where: { id: id } });
       const data = await User.findByPk(id);
-      res.status(200).json({
+      return res.status(200).json({
         message: `User data of id: ${id} has been succesfully updated`,
         data: data,
       });
     }
   } catch (error) {
     console.error("Error adding user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
 export const getAllUserProfile = async (req, res) => {
   try {
     const data = await User.findAll();
-    res.status(200).json({
+    return res.status(200).json({
       message: `User data has been succesfully fetched`,
       data: data,
     });
   } catch (error) {
     console.error("Error finding user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

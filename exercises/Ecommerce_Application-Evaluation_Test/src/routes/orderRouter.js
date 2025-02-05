@@ -2,14 +2,12 @@
 import express from "express";
 import { verifyToken } from "../middlewares/jwtAuth.js";
 import { verifyRole } from "../middlewares/validateRole.js";
-import {
-  createCategory,
-  showAllCategories,
-} from "../controllers/categoriesController.js";
 
 // CREATING ROUTES FOR "/user" REQUEST
 const router = express.Router();
-router.get("/", verifyToken, showAllCategories);
-router.post("/", verifyToken, verifyRole("admin"), createCategory);
+router.get("/", verifyToken, verifyRole("customer"));
+router.post("/", verifyToken, verifyRole("customer"));
+router.get("/:id", verifyToken, verifyRole("customer"), );
+router.get("/:id/status", verifyToken, verifyRole("admin"), );
 
 export default router;

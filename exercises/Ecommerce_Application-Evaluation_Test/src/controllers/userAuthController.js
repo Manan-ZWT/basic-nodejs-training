@@ -36,13 +36,13 @@ export const registerNewUser = async (req, res) => {
       password: password,
       role: role,
     });
-    res.status(200).json({
+    return res.status(200).json({
       message: "You have been succesfully registered",
       data: `${first_name}, ${last_name}, ${email}, ${role.toLowerCase()}`,
     });
   } catch (error) {
     console.error("Error adding user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -71,7 +71,7 @@ export const userLogin = async (req, res) => {
           { id: user.id, email: user.email, role: user.role },
           secretKey,
           {
-            expiresIn: "1h",
+            expiresIn: "4h",
           },
           {
             algorithm: "RS256",
@@ -90,6 +90,6 @@ export const userLogin = async (req, res) => {
     }
   } catch (error) {
     console.error("Error adding user:", error);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

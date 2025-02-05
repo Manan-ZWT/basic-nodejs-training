@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { Category } from "./categoriesModel.js";
+// import { Category } from "./categoriesModel.js";
 
 export const Product = sequelize.define(
   "Product",
@@ -39,9 +40,5 @@ export const Product = sequelize.define(
   }
 );
 
-Category.hasMany(Product, {
-  onDelete: "CASCADE",
-});
-Product.belongsTo(Category, {
-  onDelete: "CASCADE",
-});
+Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
+Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

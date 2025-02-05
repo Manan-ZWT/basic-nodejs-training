@@ -32,13 +32,12 @@ export async function validPass(password) {
 }
 
 
-export async function validCategory(name) {
+export async function validCategory(cat_id) {
   try {
     const category = await Category.findOne({
       where: {
-        name: name,
+        id: cat_id,
       },
-      attributes: ["id"],
     });
     return category;
   } catch (error) {

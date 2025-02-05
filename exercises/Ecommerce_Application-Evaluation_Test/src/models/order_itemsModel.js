@@ -34,18 +34,11 @@ export const Order_item = sequelize.define(
     timestamps: true,
   }
 );
-Order.hasMany(Order_item, {
-  onDelete: "CASCADE",
-});
+Order.hasMany(Order_item, { foreignKey: "order_id", onDelete: "CASCADE" });
+Order_item.belongsTo(Order, { foreignKey: "order_id", onDelete: "CASCADE" });
 
-Order_item.belongsTo(Order, {
-  onDelete: "CASCADE",
-});
-
-Order_item.hasOne(Product, {
-  onDelete: "CASCADE",
-});
-
-Product.belongsTo(Order_item, {
+Product.hasMany(Order_item, { foreignKey: "product_id", onDelete: "CASCADE" });
+Order_item.belongsTo(Product, {
+  foreignKey: "product_id",
   onDelete: "CASCADE",
 });

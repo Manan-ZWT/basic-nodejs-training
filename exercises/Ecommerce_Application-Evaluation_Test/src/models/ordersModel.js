@@ -12,19 +12,19 @@ export const Order = sequelize.define(
         key: "id",
       },
     },
-    total_price:{
-        type: DataTypes.DECIMAL(10,2),
-        allowNull:false,
+    total_price: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
     },
-    status:{
-        type:DataTypes.ENUM("pending","shipped", "delievered", "canceled"),
-        allowNull:false,
-        defaultValue:"pending",
-        set(value){
-            if(value){
-                this.setDataValue("status",value.toLowerCase())
-            }
+    status: {
+      type: DataTypes.ENUM("pending", "shipped", "delievered", "canceled"),
+      allowNull: false,
+      defaultValue: "pending",
+      set(value) {
+        if (value) {
+          this.setDataValue("status", value.toLowerCase());
         }
+      },
     },
   },
   {
@@ -32,11 +32,5 @@ export const Order = sequelize.define(
     timestamps: true,
   }
 );
-
-User.hasMany(Order, {
-  onDelete: "CASCADE",
-});
-
-Order.belongsTo(User,{
-  onDelete:"CASCADE"
-});
+User.hasMany(Order, { foreignKey: "user_id", onDelete: "CASCADE" });
+Order.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });

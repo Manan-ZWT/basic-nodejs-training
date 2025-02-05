@@ -1,7 +1,8 @@
+
 // IMPORTING YUP FOR DATA VALIDATION
 import yup from "yup";
 
-// SCHEMA FOR VALIDATING USER DATA WHEN CREATING NEW USER FOR "users" TABLE
+// SCHEMA FOR VALIDATING USER DATA WHEN CREATING NEW CATEGORY FOR "categories" TABLE
 export const addCategory = yup.object({
   name: yup
     .string()

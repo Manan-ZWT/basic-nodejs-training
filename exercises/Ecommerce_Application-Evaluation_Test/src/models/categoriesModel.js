@@ -6,7 +6,7 @@ export const Category = sequelize.define(
   {
     name: {
       type: DataTypes.STRING(100),
-      unique:true,
+      unique: true,
       allowNull: false,
     },
   },
@@ -16,3 +16,5 @@ export const Category = sequelize.define(
   }
 );
 
+// Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
+// Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

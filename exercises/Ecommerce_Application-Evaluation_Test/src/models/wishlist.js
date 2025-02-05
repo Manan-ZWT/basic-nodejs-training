@@ -29,18 +29,8 @@ export const Wishlist = sequelize.define(
   }
 );
 
-Wishlist.hasMany(Product, {
-  onDelete: "CASCADE",
-});
+Wishlist.belongsTo(Product, { foreignKey: "product_id", onDelete: "CASCADE" });
+Product.hasMany(Wishlist, { foreignKey: "product_id", onDelete: "CASCADE" });
 
-Product.belongsTo(Wishlist, {
-  onDelete: "CASCADE",
-});
-
-User.hasOne(Wishlist, {
-  onDelete: "CASCADE",
-});
-
-Wishlist.belongsTo(User, {
-  onDelete: "CASCADE",
-});
+User.hasOne(Wishlist, { foreignKey: "user_id", onDelete: "CASCADE" });
+Wishlist.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });

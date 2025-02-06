@@ -9,7 +9,7 @@ import {
 
 // CREATING ROUTES FOR "/categories" REQUEST
 const router = express.Router();
-router.get("/", verifyToken, showAllCategories);
+router.get("/", showAllCategories);
 router.post("/", verifyToken, verifyRole("admin"), createCategory);
 
 export default router;

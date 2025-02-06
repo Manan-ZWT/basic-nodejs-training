@@ -42,5 +42,9 @@ export const Product = sequelize.define(
 );
 
 // RELATIONSHIP
-Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
+Category.hasMany(Product, {
+  foreignKey: "category_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

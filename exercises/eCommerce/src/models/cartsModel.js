@@ -15,6 +15,7 @@ export const Cart = sequelize.define(
         key: "id",
         onDelete: "CASCADE",
       },
+      onDelete: "CASCADE",
     },
     product_id: {
       type: DataTypes.INTEGER,
@@ -22,6 +23,7 @@ export const Cart = sequelize.define(
         model: Product,
         key: "id",
       },
+      onDelete: "CASCADE",
     },
     quantity: {
       type: DataTypes.INTEGER,
@@ -35,8 +37,12 @@ export const Cart = sequelize.define(
 );
 
 // RELATIONSHIPS
-User.hasMany(Cart, { foreignKey: "user_id", onDelete: "CASCADE" });
+User.hasMany(Cart, { foreignKey: "user_id", onDelete: "CASCADE", hooks: true });
 Cart.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
 
+Product.hasMany(Cart, {
+  foreignKey: "product_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 Cart.belongsTo(Product, { foreignKey: "product_id", onDelete: "CASCADE" });
-Product.hasMany(Cart, { foreignKey: "product_id", onDelete: "CASCADE" });

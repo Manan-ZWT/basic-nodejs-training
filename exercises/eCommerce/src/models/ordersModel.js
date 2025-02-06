@@ -36,5 +36,9 @@ export const Order = sequelize.define(
 );
 
 // RELATIONSHIP
-User.hasMany(Order, { foreignKey: "user_id", onDelete: "CASCADE" });
+User.hasMany(Order, {
+  foreignKey: "user_id",
+  onDelete: "CASCADE",
+  hooks: true,
+});
 Order.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });

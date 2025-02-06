@@ -78,11 +78,16 @@ export const showCart = async (req, res) => {
         },
       ],
     });
-
-    return res.status(200).json({
-      message: "Product data:",
-      data: data,
-    });
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No items found in cart, Cart is empty" });
+    } else {
+      return res.status(200).json({
+        message: "Product data:",
+        data: data,
+      });
+    }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }

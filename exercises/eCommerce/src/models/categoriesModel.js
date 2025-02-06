@@ -24,5 +24,6 @@ export const Category = sequelize.define(
   }
 );
 
-// Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
+// // RELATIONSHIP
+// Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE", hooks: true });
 // Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

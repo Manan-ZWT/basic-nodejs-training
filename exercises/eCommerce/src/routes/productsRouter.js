@@ -13,9 +13,9 @@ import {
 
 // CREATING ROUTES FOR "/product" REQUEST
 const router = express.Router();
-router.get("/", verifyToken, showAllProducts);
+router.get("/", showAllProducts);
 router.post("/", verifyToken, verifyRole("admin"), checkFile, addNewProduct);
-router.get("/:id", verifyToken, showProductById);
+router.get("/:id", showProductById);
 router.patch(
   "/:id",
   verifyToken,

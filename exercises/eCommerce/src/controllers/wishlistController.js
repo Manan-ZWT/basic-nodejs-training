@@ -8,35 +8,36 @@ import { Wishlist } from "../models/wishlist.js";
 
 // ADD TO WISHLIST FUCNTION
 export const addtoWishlist = async (req, res) => {
-  let product_id = req.body;
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[2];
-
-  let decodedmsg = jwt.verify(token, secretKey);
-  const id = parseInt(decodedmsg.id);
+  let { product_id } = req.body;
   try {
-    try {
-      await addToWishlist.validate({
-        product_id,
-      });
-    } catch (validationError) {
-      return res.status(406).json({ error: validationError.message });
-    }
-    const product = await Product.findByPk(product_id);
-    if (!product) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[2];
+
+    let decodedmsg = jwt.verify(token, secretKey);
+    const user_id = parseInt(decodedmsg.id);
+
+    const data = await Product.findByPk(product_id);
+    if (!data) {
       return res.status(404).json({ error: "Product not found" });
     }
-    const user = await User.findByPk(id);
+
+    await addToWishlist.validate({
+      product_id,
+    });
+
+    const user = await User.findByPk(user_id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
+
     await Wishlist.create({
-      user_id: id,
+      user_id: user_id,
       product_id: product_id,
     });
+
     return res
       .status(200)
-      .json({ message: "Product has been succesfully added to the wishlist" });
+      .json({ message: "Product has been successfully added to the wishlist" });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }
@@ -70,10 +71,16 @@ export const showWishlist = async (req, res) => {
       ],
     });
 
-    return res.status(200).json({
-      message: "Product data:",
-      data: data,
-    });
+    if (data.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No items found in wishlist, Wishlist is empty" });
+    } else {
+      return res.status(200).json({
+        message: "Product data:",
+        data: data,
+      });
+    }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
   }

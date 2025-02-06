@@ -1,6 +1,8 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import jwt from "jsonwebtoken";
 import { secretKey } from "../config/config.js";
 
+// VERFIY ROLE BASED ACCESS FUCNTION
 export const verifyRole = (...roles) => {
   return (req, res, next) => {
     const authHeader = req.headers["authorization"];

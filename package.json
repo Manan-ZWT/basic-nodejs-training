@@ -11,7 +11,7 @@
     "day-5V": "node exercises/Day_5V/index.js",
     "day-6": "node exercises/Day_6/index.js",
     "day-7": "node exercises/Day_7/index.js",
-    "ecommerce": "node exercises/Ecommerce_Application-Evaluation_Test/index.js"
+    "ecommerce": "node exercises/ecommerce/index.js"
   },
   "type": "module",
   "author": "",

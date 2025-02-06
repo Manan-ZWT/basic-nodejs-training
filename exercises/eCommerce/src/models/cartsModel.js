@@ -1,8 +1,10 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { User } from "./usersModel.js";
 import { Product } from "./productsModel.js";
 
+// CART MODEL FOR "carts" TABLE
 export const Cart = sequelize.define(
   "Cart",
   {
@@ -32,6 +34,7 @@ export const Cart = sequelize.define(
   }
 );
 
+// RELATIONSHIPS
 User.hasMany(Cart, { foreignKey: "user_id", onDelete: "CASCADE" });
 Cart.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });
 

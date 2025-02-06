@@ -1,8 +1,9 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { Category } from "./categoriesModel.js";
-// import { Category } from "./categoriesModel.js";
 
+// PRODUCT MODEL FOR "products" TABLE
 export const Product = sequelize.define(
   "Product",
   {
@@ -39,6 +40,6 @@ export const Product = sequelize.define(
     timestamps: true,
   }
 );
-
+// RELATIONSHIP
 Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
 Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

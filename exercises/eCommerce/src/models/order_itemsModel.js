@@ -1,8 +1,10 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { Order } from "./ordersModel.js";
 import { Product } from "./productsModel.js";
 
+// ORDER_ITEM MODEL FOR "order_items" TABLE
 export const Order_item = sequelize.define(
   "Order_item",
   {
@@ -34,6 +36,8 @@ export const Order_item = sequelize.define(
     timestamps: true,
   }
 );
+
+// RELATIONSHIP
 Order.hasMany(Order_item, { foreignKey: "order_id", onDelete: "CASCADE" });
 Order_item.belongsTo(Order, { foreignKey: "order_id", onDelete: "CASCADE" });
 

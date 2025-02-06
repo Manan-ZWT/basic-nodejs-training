@@ -1,6 +1,8 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 
+// CATEGORY MODEL FOR "categories" TABLE
 export const Category = sequelize.define(
   "Category",
   {

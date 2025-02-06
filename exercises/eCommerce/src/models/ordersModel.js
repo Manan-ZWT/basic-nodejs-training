@@ -1,7 +1,9 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { User } from "./usersModel.js";
 
+// ORDER MODEL FOR "orders" TABLE
 export const Order = sequelize.define(
   "Order",
   {
@@ -32,5 +34,7 @@ export const Order = sequelize.define(
     timestamps: true,
   }
 );
+
+// RELATIONSHIP
 User.hasMany(Order, { foreignKey: "user_id", onDelete: "CASCADE" });
 Order.belongsTo(User, { foreignKey: "user_id", onDelete: "CASCADE" });

@@ -1,6 +1,8 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import jwt from "jsonwebtoken";
 import { secretKey } from "../config/config.js";
 
+// VERIFY JWT TOKEN FUCNTION
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[2];

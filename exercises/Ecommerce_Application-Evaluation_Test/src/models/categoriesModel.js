@@ -6,13 +6,19 @@ export const Category = sequelize.define(
   {
     name: {
       type: DataTypes.STRING(100),
-      unique: true,
       allowNull: false,
     },
   },
   {
     tableName: "categories",
     timestamps: true,
+    indexes: [
+      {
+        unique: true,
+        fields: ["name"],
+        name: "unique_name_index",
+      },
+    ],
   }
 );
 

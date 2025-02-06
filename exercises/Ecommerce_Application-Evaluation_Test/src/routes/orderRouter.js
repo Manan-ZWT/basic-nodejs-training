@@ -2,13 +2,18 @@
 import express from "express";
 import { verifyToken } from "../middlewares/jwtAuth.js";
 import { verifyRole } from "../middlewares/validateRole.js";
-import { placeOrder } from "../validators/orderValidator.js";
+import {
+  getOrderById,
+  getOrderHistory,
+  placeOrder,
+  updateOrderStatus,
+} from "../controllers/orderController.js";
 
 // CREATING ROUTES FOR "/user" REQUEST
 const router = express.Router();
-router.get("/", verifyToken, verifyRole("customer"));
+router.get("/", verifyToken, verifyRole("customer"), getOrderHistory);
 router.post("/", verifyToken, verifyRole("customer"), placeOrder);
-router.get("/:id", verifyToken, verifyRole("customer"));
-router.get("/:id/status", verifyToken, verifyRole("admin"));
+router.get("/:id", verifyToken, verifyRole("customer"), getOrderById);
+router.put("/:id/status", verifyToken, verifyRole("admin"), updateOrderStatus);
 
 export default router;

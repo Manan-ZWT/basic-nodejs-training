@@ -34,32 +34,29 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 },
 }).single("uploaded_file");
 
 // EXPORTING FUNCTION TO CHECK THE VALIDATION FOR THE FILE
 export const checkFile = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
-      // Handle file size limit error
       if (err.code === "LIMIT_FILE_SIZE") {
         return res
           .status(400)
           .json({ message: "File should be smaller than 5MB" });
       }
     } else if (err) {
-      // Handle file type error
       if (err.message === "Only .jpg and .png files are allowed!") {
         return res.status(400).json({ message: err.message });
       }
       return res.status(400).json({ message: err.message });
     }
 
-    // Proceed to the next middleware if no file was uploaded (req.file is undefined)
     if (req.file === undefined) {
-      return next(); // No file uploaded, move to next middleware
+      return next();
     }
 
-    next(); // Continue with the file if uploaded
+    next();
   });
 };

@@ -1,7 +1,9 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { Category } from "../models/categoriesModel.js";
 import { addCategory } from "../validators/categoryValidator.js";
 import { validCategory } from "../validators/smallValidators.js";
 
+// CREATE CATEGORY FUNCTION
 export const createCategory = async (req, res) => {
   try {
     const name = req.body.name;
@@ -32,6 +34,7 @@ export const createCategory = async (req, res) => {
   }
 };
 
+// SHOW ALL CATEGORY FUNCTION
 export const showAllCategories = async (req, res) => {
   try {
     const data = await Category.findAll();

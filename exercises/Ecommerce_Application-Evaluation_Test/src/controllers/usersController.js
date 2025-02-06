@@ -1,9 +1,11 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { User } from "../models/usersModel.js";
 import jwt from "jsonwebtoken";
 import { validEmail } from "../validators/smallValidators.js";
 import { secretKey } from "../config/config.js";
 import { userUpdateSchema } from "../validators/userValidator.js";
 
+// GET USER DETAILS FUCNTION
 export const getUserProfile = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -23,6 +25,7 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+// UPDATE USER DETAILS FUCNTION
 export const updateUserProfile = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -73,6 +76,7 @@ export const updateUserProfile = async (req, res) => {
   }
 };
 
+// GET ALL USER DETAILS FUCNTION
 export const getAllUserProfile = async (req, res) => {
   try {
     const data = await User.findAll();

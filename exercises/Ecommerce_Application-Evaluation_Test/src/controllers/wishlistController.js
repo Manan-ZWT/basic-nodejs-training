@@ -1,3 +1,4 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { Product } from "../models/productsModel.js";
 import { User } from "../models/usersModel.js";
 import { addToWishlist } from "../validators/wishlistValidator.js";
@@ -5,6 +6,7 @@ import { secretKey } from "../config/config.js";
 import jwt from "jsonwebtoken";
 import { Wishlist } from "../models/wishlist.js";
 
+// ADD TO WISHLIST FUCNTION
 export const addtoWishlist = async (req, res) => {
   let { user_id, product_id } = req.body;
   try {
@@ -36,6 +38,7 @@ export const addtoWishlist = async (req, res) => {
   }
 };
 
+// SHOW WISHLIST ITEMS FUCNTION
 export const showWishlist = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -72,6 +75,7 @@ export const showWishlist = async (req, res) => {
   }
 };
 
+// DELETE FROM WISHLIST FUCNTION
 export const deleteFromWishlist = async (req, res) => {
   try {
     const product_id = parseInt(req.params.id);

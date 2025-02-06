@@ -1,3 +1,4 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { Cart } from "../models/cartsModel.js";
 import { Product } from "../models/productsModel.js";
 import { User } from "../models/usersModel.js";
@@ -5,6 +6,7 @@ import { addtoCart } from "../validators/cartValidators.js";
 import { secretKey } from "../config/config.js";
 import jwt from "jsonwebtoken";
 
+// ADD TO CART FUCNTION
 export const addToCart = async (req, res) => {
   let { user_id, product_id, quantity } = req.body;
   try {
@@ -50,6 +52,7 @@ export const addToCart = async (req, res) => {
   }
 };
 
+// SHOW CART ITEMS FUNCTION
 export const showCart = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -86,6 +89,7 @@ export const showCart = async (req, res) => {
   }
 };
 
+// DELETE FROM CART FUNCTION
 export const deleteFromCart = async (req, res) => {
   try {
     const product_id = parseInt(req.params.id);

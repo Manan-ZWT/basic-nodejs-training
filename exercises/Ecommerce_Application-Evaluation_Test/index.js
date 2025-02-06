@@ -24,7 +24,7 @@ const app = express();
   await sequelize.sync({ alter: true });
 })();
 
-// MIDDLEWARES
+// MIDDLEWARES AND ROUTES
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/api/auth", authRouter);

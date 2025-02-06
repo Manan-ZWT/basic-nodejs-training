@@ -7,6 +7,7 @@ import {
 import { validCategory } from "../validators/smallValidators.js";
 import fs from "fs";
 
+// ADD NEW PRODUCT FUCNTION
 export const addNewProduct = async (req, res) => {
   try {
     const { name, description, price, stock, category_id } = req.body;
@@ -48,6 +49,7 @@ export const addNewProduct = async (req, res) => {
   }
 };
 
+// SHOW ALL PRODUCT FUNCTION
 export const showAllProducts = async (req, res) => {
   try {
     const data = await Product.findAll();
@@ -58,6 +60,7 @@ export const showAllProducts = async (req, res) => {
   }
 };
 
+// SHOW PRODUCT BY ID FUCNTION
 export const showProductById = async (req, res) => {
   try {
     if (req.params.id) {
@@ -79,6 +82,7 @@ export const showProductById = async (req, res) => {
   }
 };
 
+// UPDATE PRODUCT DETAILS FUCNTION
 export const updateProduct = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
@@ -140,6 +144,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+// DELETE A PRODUCT FUCNTION
 export const deleteProduct = async (req, res) => {
   try {
     const id = parseInt(req.params.id);

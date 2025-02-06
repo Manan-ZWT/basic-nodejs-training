@@ -1,3 +1,4 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { User } from "../models/usersModel.js";
 import {
   loginUserSchema,
@@ -8,6 +9,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { secretKey } from "../config/config.js";
 
+// SIGNUP FUCNTION
 export const registerNewUser = async (req, res) => {
   try {
     let { first_name, last_name, email, password, role } = req.body;
@@ -46,6 +48,7 @@ export const registerNewUser = async (req, res) => {
   }
 };
 
+// LOGIN FUNCTION
 export const userLogin = async (req, res) => {
   try {
     let { email, password } = req.body;

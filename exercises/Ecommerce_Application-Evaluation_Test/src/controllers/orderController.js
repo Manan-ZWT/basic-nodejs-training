@@ -1,3 +1,4 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { Order } from "../models/ordersModel.js";
 import { Order_item } from "../models/order_itemsModel.js";
 import { Cart } from "../models/cartsModel.js";
@@ -6,6 +7,7 @@ import jwt from "jsonwebtoken";
 import { secretKey } from "../config/config.js";
 import { updateStatus } from "../validators/orderValidator.js";
 
+// PLACE ORDER FUNCTION
 export const placeOrder = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -85,6 +87,7 @@ export const placeOrder = async (req, res) => {
   }
 };
 
+// GET ORDER HISTORY FUNCTION
 export const getOrderHistory = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -112,6 +115,7 @@ export const getOrderHistory = async (req, res) => {
   }
 };
 
+// GET ORDER DETAILS BY ID FUNCTION
 export const getOrderById = async (req, res) => {
   try {
     const authHeader = req.headers["authorization"];
@@ -140,6 +144,7 @@ export const getOrderById = async (req, res) => {
   }
 };
 
+// UPDATE ORDER STATUS FUNCTION
 export const updateOrderStatus = async (req, res) => {
   try {
     const status = req.body.status;

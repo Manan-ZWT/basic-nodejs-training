@@ -18,11 +18,11 @@ const fileFilter = (req, file, cb) => {
 // CONFIGURING DISK STORAGE FOR MULTER
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    if (!fs.existsSync("./uploads")) {
-      fs.mkdirSync("./uploads");
-      return cb(null, "./uploads");
+    if (!fs.existsSync("./products")) {
+      fs.mkdirSync("./products");
+      return cb(null, "./products");
     } else {
-      return cb(null, "./uploads");
+      return cb(null, "./products");
     }
   },
   filename: function (req, file, cb) {

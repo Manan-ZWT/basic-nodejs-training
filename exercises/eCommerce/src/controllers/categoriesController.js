@@ -24,9 +24,9 @@ export const createCategory = async (req, res) => {
         name: name,
       });
       const data = await Category.findOne({ where: { name: name } });
-      return res.status(200).json({
+      return res.status(201).json({
         message: `Category has been succesfully added`,
-        data: data,
+        data: `Category Name: ${data.name}`,
       });
     }
   } catch (error) {
@@ -37,11 +37,20 @@ export const createCategory = async (req, res) => {
 // SHOW ALL CATEGORY FUNCTION
 export const showAllCategories = async (req, res) => {
   try {
-    const data = await Category.findAll();
-    if (data.length === 0) {
+    const categories = await Category.findAll();
+    if (categories.length === 0) {
       return res.status(404).json({ error: "No category found" });
     } else {
-      return res.status(200).json({ message: "Categories founded", data: data });
+      const category_data = [];
+      for (let category of categories) {
+        category_data.push({
+          id: category.id,
+          name: category.name,
+        });
+      }
+      return res
+        .status(200)
+        .json({ message: "Categories founded", data: category_data });
     }
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

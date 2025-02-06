@@ -8,11 +8,15 @@ import { Wishlist } from "../models/wishlist.js";
 
 // ADD TO WISHLIST FUCNTION
 export const addtoWishlist = async (req, res) => {
-  let { user_id, product_id } = req.body;
+  let product_id = req.body;
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[2];
+
+  let decodedmsg = jwt.verify(token, secretKey);
+  const id = parseInt(decodedmsg.id);
   try {
     try {
       await addToWishlist.validate({
-        user_id,
         product_id,
       });
     } catch (validationError) {
@@ -22,12 +26,12 @@ export const addtoWishlist = async (req, res) => {
     if (!product) {
       return res.status(404).json({ error: "Product not found" });
     }
-    const user = await User.findByPk(user_id);
+    const user = await User.findByPk(id);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
     await Wishlist.create({
-      user_id: user_id,
+      user_id: id,
       product_id: product_id,
     });
     return res
@@ -88,6 +92,7 @@ export const deleteFromWishlist = async (req, res) => {
     const wishlistProduct = await Wishlist.findOne({
       where: {
         product_id: product_id,
+        user_id: id,
       },
     });
     if (!wishlistProduct) {

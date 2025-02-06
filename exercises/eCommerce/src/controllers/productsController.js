@@ -34,7 +34,7 @@ export const addNewProduct = async (req, res) => {
           image_url: req.file ? req.file.path : null,
         });
         return res
-          .status(200)
+          .status(201)
           .json({ message: "Product has been added successfully" });
       } else {
         return res.status(404).json({ error: "Category not found" });

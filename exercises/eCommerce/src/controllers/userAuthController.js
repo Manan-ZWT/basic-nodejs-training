@@ -31,16 +31,18 @@ export const registerNewUser = async (req, res) => {
         error: `User with the same email: ${email} already exists.`,
       });
     }
-    const data = await User.create({
+    await User.create({
       first_name: first_name,
       last_name: last_name,
       email: email,
       password: password,
       role: role,
     });
-    return res.status(200).json({
+
+    const user = await User.findOne({ where: { email: email } });
+    return res.status(201).json({
       message: "You have been succesfully registered",
-      data: `${first_name}, ${last_name}, ${email}, ${role.toLowerCase()}`,
+      data: `First name: ${user.first_name}, Last name: ${user.last_name}, Email: ${user.email}, Role: ${user.role}`,
     });
   } catch (error) {
     console.error("Error adding user:", error);

@@ -8,8 +8,14 @@ import jwt from "jsonwebtoken";
 
 // ADD TO CART FUCNTION
 export const addToCart = async (req, res) => {
-  let { user_id, product_id, quantity } = req.body;
+  let { product_id, quantity } = req.body;
   try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[2];
+
+    let decodedmsg = jwt.verify(token, secretKey);
+    const user_id = parseInt(decodedmsg.id);
+
     const data = await Product.findByPk(product_id);
     if (!data) {
       return res.status(404).json({ error: "Product not found" });
@@ -36,13 +42,6 @@ export const addToCart = async (req, res) => {
       product_id: product_id,
       quantity: quantity,
     });
-
-    await Product.update(
-      {
-        stock: data.stock - quantity,
-      },
-      { where: { id: product_id } }
-    );
 
     return res
       .status(200)
@@ -102,11 +101,12 @@ export const deleteFromCart = async (req, res) => {
     const cartProduct = await Cart.findOne({
       where: {
         product_id: product_id,
+        user_id: id,
       },
     });
     if (!cartProduct) {
       return res.status(404).json({
-        message: `Product with product ID: ${product_id} has not been found in your card`,
+        message: `Product with product ID: ${product_id} has not been found in your cart`,
       });
     }
     await Cart.destroy({

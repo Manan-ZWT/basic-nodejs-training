@@ -7,12 +7,12 @@ export const registerNewUserSchema = yup.object({
     .string()
     .required("Name is required")
     .min(3, "Name must be at least 3 characters")
-    .matches(/^[a-zA-Z\s]+$/, "Name must only contain alphabets and spaces"),
+    .matches(/^[a-zA-Z]+$/, "Name must only contain alphabets"),
   last_name: yup
     .string()
     .required("Name is required")
     .min(3, "Name must be at least 3 characters")
-    .matches(/^[a-zA-Z\s]+$/, "Name must only contain alphabets and spaces"),
+    .matches(/^[a-zA-Z]+$/, "Name must only contain alphabets"),
   email: yup
     .string()
     .required("Email is required")
@@ -71,11 +71,6 @@ export const userUpdateSchema = yup.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/,
       "Password must contain at least one lowecase character, one uppercase character, one digit and one special character"
     ),
-  role: yup
-    .string()
-    .transform((value) => value && value.toLowerCase())
-    .oneOf(["admin", "customer"], "Not a valid role, enter a valid role")
-    .optional()
 });
 
 

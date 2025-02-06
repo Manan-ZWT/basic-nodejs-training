@@ -40,6 +40,12 @@ export const placeOrder = async (req, res) => {
       const product_price = parseFloat(product_data.price);
       const item_total_price = product_quantity * product_price;
 
+      if (product_quantity > product_data.stock) {
+        return res.status(409).json({
+          message: `Not enough stock available for the selected item: ${product_data.name}`,
+        });
+      }
+
       total_price += item_total_price;
 
       order_items_data.push({
@@ -69,6 +75,13 @@ export const placeOrder = async (req, res) => {
         quantity: item.quantity,
         price: item.price,
       });
+
+      await Product.decrement(
+        {
+          stock: item.quantity,
+        },
+        { where: { id: item.product_id } }
+      );
     }
 
     await Cart.destroy({

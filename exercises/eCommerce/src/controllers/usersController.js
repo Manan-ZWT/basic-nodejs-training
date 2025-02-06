@@ -14,10 +14,10 @@ export const getUserProfile = async (req, res) => {
     let decodedmsg = jwt.verify(token, secretKey);
     const id = parseInt(decodedmsg.id);
 
-    const data = await User.findByPk(id);
+    const user = await User.findByPk(id);
     return res.status(200).json({
       message: `User data of id: ${id} has been succesfully fetched`,
-      data: data,
+      data: `Name: ${user.first_name} ${user.last_name}, Email: ${user.email}, Role: ${user.role}`,
     });
   } catch (error) {
     console.error("Error finding user:", error);
@@ -34,14 +34,13 @@ export const updateUserProfile = async (req, res) => {
     let decodedmsg = jwt.verify(token, secretKey);
     const id = parseInt(decodedmsg.id);
 
-    const { first_name, last_name, email, password, role } = req.body;
+    const { first_name, last_name, email, password } = req.body;
     try {
       await userUpdateSchema.validate({
         first_name,
         last_name,
         email,
         password,
-        role,
       });
     } catch (validationError) {
       return res.status(406).json({ error: validationError.message });
@@ -55,21 +54,19 @@ export const updateUserProfile = async (req, res) => {
           messsage: `Please add your valid email`,
         });
       }
-    } else {
-      const update_query = {
-        ...(first_name && { first_name: first_name }),
-        ...(last_name && { last_name: last_name }),
-        ...(email && { email: email }),
-        ...(password && { password: password }),
-        ...(role && { role: role }),
-      };
-      await User.update(update_query, { where: { id: id } });
-      const data = await User.findByPk(id);
-      return res.status(200).json({
-        message: `User data of id: ${id} has been succesfully updated`,
-        data: data,
-      });
     }
+    const update_query = {
+      ...(first_name && { first_name: first_name }),
+      ...(last_name && { last_name: last_name }),
+      ...(email && { email: email }),
+      ...(password && { password: password }),
+    };
+    await User.update(update_query, { where: { id: id } });
+    const user = await User.findByPk(id);
+    return res.status(200).json({
+      message: `User data of id: ${id} has been succesfully updated`,
+      data: `Name: ${user.first_name} ${user.last_name}, Email: ${user.email}, Role: ${user.role}`,
+    });
   } catch (error) {
     console.error("Error adding user:", error);
     return res.status(500).json({ message: "Internal server error" });
@@ -79,10 +76,19 @@ export const updateUserProfile = async (req, res) => {
 // GET ALL USER DETAILS FUCNTION
 export const getAllUserProfile = async (req, res) => {
   try {
-    const data = await User.findAll();
+    const users = await User.findAll();
+    let user_data = [];
+    for (let user of users) {
+      user_data.push({
+        First_name: user.first_name,
+        Last_name: user.last_name,
+        Email: user.email,
+        Role: user.role,
+      });
+    }
     return res.status(200).json({
       message: `User data has been succesfully fetched`,
-      data: data,
+      data: user_data,
     });
   } catch (error) {
     console.error("Error finding user:", error);

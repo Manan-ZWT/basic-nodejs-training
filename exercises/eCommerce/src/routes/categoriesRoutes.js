@@ -7,7 +7,7 @@ import {
   showAllCategories,
 } from "../controllers/categoriesController.js";
 
-// CREATING ROUTES FOR "/user" REQUEST
+// CREATING ROUTES FOR "/categories" REQUEST
 const router = express.Router();
 router.get("/", verifyToken, showAllCategories);
 router.post("/", verifyToken, verifyRole("admin"), createCategory);

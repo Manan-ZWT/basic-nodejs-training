@@ -9,7 +9,7 @@ import {
   updateOrderStatus,
 } from "../controllers/orderController.js";
 
-// CREATING ROUTES FOR "/user" REQUEST
+// CREATING ROUTES FOR "/order" REQUEST
 const router = express.Router();
 router.get("/", verifyToken, verifyRole("customer"), getOrderHistory);
 router.post("/", verifyToken, verifyRole("customer"), placeOrder);

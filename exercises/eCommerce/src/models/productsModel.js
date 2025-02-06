@@ -40,6 +40,7 @@ export const Product = sequelize.define(
     timestamps: true,
   }
 );
+
 // RELATIONSHIP
 Category.hasMany(Product, { foreignKey: "category_id", onDelete: "CASCADE" });
 Product.belongsTo(Category, { foreignKey: "category_id", onDelete: "CASCADE" });

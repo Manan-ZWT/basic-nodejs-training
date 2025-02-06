@@ -1,7 +1,9 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import bcrypt from "bcryptjs";
 
+// USER MODEL FOR THE "users" TABLE
 export const User = sequelize.define(
   "User",
   {

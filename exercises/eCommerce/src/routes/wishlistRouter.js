@@ -4,7 +4,7 @@ import { verifyToken } from "../middlewares/jwtAuth.js";
 import { verifyRole } from "../middlewares/validateRole.js";
 import { addtoWishlist, showWishlist, deleteFromWishlist } from "../controllers/wishlistController.js";
 
-// CREATING ROUTES FOR "/cart" REQUEST
+// CREATING ROUTES FOR "/wishlist" REQUEST
 const router = express.Router();
 router.get("/", verifyToken, verifyRole("customer"), showWishlist);
 router.post("/", verifyToken, verifyRole("customer"), addtoWishlist);

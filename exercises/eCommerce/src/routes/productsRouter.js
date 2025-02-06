@@ -10,6 +10,7 @@ import {
   showProductById,
   updateProduct,
 } from "../controllers/productsController.js";
+
 // CREATING ROUTES FOR "/product" REQUEST
 const router = express.Router();
 router.get("/", verifyToken, showAllProducts);

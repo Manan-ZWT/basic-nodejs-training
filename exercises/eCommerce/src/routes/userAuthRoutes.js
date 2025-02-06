@@ -5,7 +5,7 @@ import {
   userLogin,
 } from "../controllers/userAuthController.js";
 
-// CREATING ROUTES FOR "/user" REQUEST
+// CREATING ROUTES FOR "/auth" REQUEST
 const router = express.Router();
 router.post("/registration", registerNewUser);
 router.post("/login", userLogin);

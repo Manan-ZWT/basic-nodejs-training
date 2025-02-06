@@ -1,9 +1,11 @@
+// IMPORT ALL REQUIRED MODULES AND FILES
 import { DataTypes } from "sequelize";
 import { sequelize } from "./index.js";
 import { Category } from "./categoriesModel.js";
 import { User } from "./usersModel.js";
 import { Product } from "./productsModel.js";
 
+// WISHLIST MODEL FOR "wishlist" TABLE
 export const Wishlist = sequelize.define(
   "Wishlist",
   {
@@ -29,6 +31,7 @@ export const Wishlist = sequelize.define(
   }
 );
 
+// RELATIONSHIP
 Wishlist.belongsTo(Product, { foreignKey: "product_id", onDelete: "CASCADE" });
 Product.hasMany(Wishlist, { foreignKey: "product_id", onDelete: "CASCADE" });
 

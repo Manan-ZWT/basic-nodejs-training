@@ -70,6 +70,10 @@ export const showAllProducts = async (req, res) => {
       });
       if (categoryName) {
         conditions.category_id = categoryName.id;
+      } else {
+        return res.status(404).json({
+          message: `Category : ${category} does not exists, Please enter a valid Category`,
+        });
       }
     }
 

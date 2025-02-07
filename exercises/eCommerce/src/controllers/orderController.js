@@ -100,6 +100,7 @@ export const placeOrder = async (req, res) => {
     `;
 
     sendMail(
+      // ENTER THE MAIL FROM THE USER , THIS IS FOR TESTING PURPOSE
       `mananpatel1603@gmail.com`,
       `Your Order details`,
       `${orderSummary}`

@@ -3,8 +3,7 @@ import { Order } from "../models/ordersModel.js";
 import { Order_item } from "../models/order_itemsModel.js";
 import { Cart } from "../models/cartsModel.js";
 import { Product } from "../models/productsModel.js";
-import jwt from "jsonwebtoken";
-import { secretKey } from "../config/config.js";
+import { sendMail } from "../services/mailer.js";
 import { updateStatus } from "../validators/orderValidator.js";
 
 // PLACE ORDER FUNCTION
@@ -70,7 +69,7 @@ export const placeOrder = async (req, res) => {
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
-      })),
+      }))
     );
 
     for (const item of order_items_data) {
@@ -83,6 +82,28 @@ export const placeOrder = async (req, res) => {
     await Cart.destroy({
       where: { user_id: user_id },
     });
+
+    let orderDetails = "";
+    for (let item of order_list) {
+      orderDetails += `<li>${item.product_name} (x${item.quantity}) - $${item.price}</li>`;
+    }
+
+    const orderSummary = `
+      <div>
+        <h2>Order Summary</h2>
+        <p><strong>Order ID:</strong> ${order.id}</p>
+        <ul>
+          ${orderDetails}
+        </ul>
+        <p><strong>Total Price:</strong> ${total_price}</p>
+      </div>
+    `;
+
+    sendMail(
+      `mananpatel1603@gmail.com`,
+      `Your Order details`,
+      `${orderSummary}`
+    );
 
     return res.status(200).json({
       message: "Order placed successfully",
@@ -99,11 +120,7 @@ export const placeOrder = async (req, res) => {
 // GET ORDER HISTORY FUNCTION
 export const getOrderHistory = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const user_id = parseInt(decodedmsg.id);
+    const user_id = parseInt(req.user.id);
 
     const [orders] = await Order.findAll({
       where: { user_id: user_id },
@@ -127,11 +144,7 @@ export const getOrderHistory = async (req, res) => {
 // GET ORDER DETAILS BY ID FUNCTION
 export const getOrderById = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const user_id = parseInt(decodedmsg.id);
+    const user_id = parseInt(req.user.id);
 
     const id = parseInt(req.params.id);
     const order = await Order.findByPk(id, {

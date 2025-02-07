@@ -1,5 +1,7 @@
 // IMPORTING REQUIRED MODULES AND FILES
 import { Product } from "../models/productsModel.js";
+import { Category } from "../models/categoriesModel.js";
+import { Op } from "sequelize";
 import {
   createNewProductSchema,
   updateProductSchema,
@@ -52,7 +54,39 @@ export const addNewProduct = async (req, res) => {
 // SHOW ALL PRODUCT FUNCTION
 export const showAllProducts = async (req, res) => {
   try {
-    const data = await Product.findAll();
+    let min_price = parseInt(req.query.min_price) || 0;
+    let max_price = parseInt(req.query.max_price) || Number.MAX_VALUE;
+    let category = req.query.category
+      ? String(req.query.category).trim()
+      : null;
+
+    const conditions = {
+      price: { [Op.between]: [min_price, max_price] },
+    };
+
+    if (category) {
+      const categoryName = await Category.findOne({
+        where: { name: category },
+      });
+      if (categoryName) {
+        conditions.category_id = categoryName.id;
+      }
+    }
+
+    const data = await Product.findAll({
+      where: conditions,
+      include: [
+        {
+          model: Category,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    if (data.length === 0) {
+      return res.status(404).json({ message: "No products found" });
+    }
+
     return res.status(200).json({ message: "Products:", data: data });
   } catch (error) {
     console.error("Error getting product:", error);

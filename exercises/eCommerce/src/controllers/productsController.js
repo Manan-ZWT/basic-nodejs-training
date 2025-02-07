@@ -12,7 +12,12 @@ import fs from "fs";
 // ADD NEW PRODUCT FUCNTION
 export const addNewProduct = async (req, res) => {
   try {
-    const { name, description, price, stock, category_id } = req.body;
+    const name = String(req.body.name).trim();
+    const description = String(req.body.description).trim();
+    const price = parseFloat(req.body.price);
+    const stock = parseInt(req.body.stock);
+    const category_id = parseInt(req.body.category_id);
+
     try {
       await createNewProductSchema.validate({
         name,
@@ -79,10 +84,11 @@ export const showAllProducts = async (req, res) => {
 
     const data = await Product.findAll({
       where: conditions,
+      attributes: ["id", "name", "description", "price", "stock", "image_url"],
       include: [
         {
           model: Category,
-          attributes: ["name"],
+          attributes: ["id", "name"],
         },
       ],
     });
@@ -104,7 +110,22 @@ export const showProductById = async (req, res) => {
     if (req.params.id) {
       const id = parseInt(req.params.id);
       if (Number.isInteger(id) || id > 0) {
-        const data = await Product.findByPk(id);
+        const data = await Product.findByPk(id, {
+          attributes: [
+            "id",
+            "name",
+            "description",
+            "price",
+            "stock",
+            "image_url",
+          ],
+          include: [
+            {
+              model: Category,
+              attributes: ["id", "name"],
+            },
+          ],
+        });
         return res.status(200).json({ message: `Products: ${id}`, data: data });
       } else {
         res
@@ -125,6 +146,7 @@ export const updateProduct = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { name, description, price, stock, category_id } = req.body;
+
     try {
       await updateProductSchema.validate({
         name,
@@ -136,6 +158,12 @@ export const updateProduct = async (req, res) => {
     } catch (validationError) {
       return res.status(406).json({ error: validationError.message });
     }
+
+    const product = await Product.findByPk(id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
     if (category_id) {
       const categoryExists = await validCategory(category_id);
       if (!categoryExists) {
@@ -143,17 +171,12 @@ export const updateProduct = async (req, res) => {
       }
     }
 
-    const product = await Product.findByPk(id);
-    if (!product) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-
     const updatedData = {
-      ...(name && { name }),
-      ...(description && { description }),
-      ...(price && { price }),
-      ...(stock && { stock }),
-      ...(category_id && { category_id }),
+      ...(name && { name: name }),
+      ...(description && { description: description }),
+      ...(price && { price: price }),
+      ...(stock && { stock: stock }),
+      ...(category_id && { category_id: category_id }),
       ...(req.file ? { image_url: req.file.path } : {}),
     };
 

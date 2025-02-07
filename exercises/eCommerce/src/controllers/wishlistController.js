@@ -10,11 +10,12 @@ import { Wishlist } from "../models/wishlist.js";
 export const addtoWishlist = async (req, res) => {
   let { product_id } = req.body;
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
+    const user_id = parseInt(req.user.id);
 
-    let decodedmsg = jwt.verify(token, secretKey);
-    const user_id = parseInt(decodedmsg.id);
+    const user = await User.findByPk(user_id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     const data = await Product.findByPk(product_id);
     if (!data) {
@@ -24,11 +25,6 @@ export const addtoWishlist = async (req, res) => {
     await addToWishlist.validate({
       product_id,
     });
-
-    const user = await User.findByPk(user_id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
 
     await Wishlist.create({
       user_id: user_id,
@@ -46,11 +42,7 @@ export const addtoWishlist = async (req, res) => {
 // SHOW WISHLIST ITEMS FUCNTION
 export const showWishlist = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const id = parseInt(decodedmsg.id);
+    const id = parseInt(req.user.id);
 
     const data = await Wishlist.findAll({
       where: {
@@ -89,27 +81,18 @@ export const showWishlist = async (req, res) => {
 // DELETE FROM WISHLIST FUCNTION
 export const deleteFromWishlist = async (req, res) => {
   try {
-    const product_id = parseInt(req.params.id);
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
+    const id= parseInt(req.params.id);
+    const user_id = parseInt(req.user.id);
 
-    let decodedmsg = jwt.verify(token, secretKey);
-    const id = parseInt(decodedmsg.id);
-
-    const wishlistProduct = await Wishlist.findOne({
-      where: {
-        product_id: product_id,
-        user_id: id,
-      },
-    });
+    const wishlistProduct = await Wishlist.findByPk(id);
     if (!wishlistProduct) {
       return res.status(404).json({
-        message: `Product with product ID: ${product_id} has not been found in your wishlist`,
+        message: `No entry with ID: ${id} has not been found in your wishlist`,
       });
     }
 
     await Wishlist.destroy({
-      where: { user_id: id, product_id: product_id },
+      where: { id: id,user_id:user_id },
     });
 
     return res.status(200).json({

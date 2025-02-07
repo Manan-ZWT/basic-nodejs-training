@@ -10,11 +10,7 @@ import { updateStatus } from "../validators/orderValidator.js";
 // PLACE ORDER FUNCTION
 export const placeOrder = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const user_id = parseInt(decodedmsg.id);
+    const user_id = parseInt(req.user.id);
 
     const cart_items = await Cart.findAll({ where: { user_id: user_id } });
 
@@ -68,18 +64,18 @@ export const placeOrder = async (req, res) => {
       status: "pending",
     });
 
-    for (let item of order_items_data) {
-      await Order_item.create({
+    await Order_item.bulkCreate(
+      order_items_data.map((item) => ({
         order_id: order.id,
         product_id: item.product_id,
         quantity: item.quantity,
         price: item.price,
-      });
+      })),
+    );
 
+    for (const item of order_items_data) {
       await Product.decrement(
-        {
-          stock: item.quantity,
-        },
+        { stock: item.quantity },
         { where: { id: item.product_id } }
       );
     }

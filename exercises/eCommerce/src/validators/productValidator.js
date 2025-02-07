@@ -28,6 +28,6 @@ export const updateProductSchema = yup.object({
   description: yup.string().optional(),
   price: yup.number("Enter a number in price").optional(),
   stock: yup.number("Enter a number in stock").optional(),
-  category_id: yup.number("Enter a valid number").optional(),
+  category_id: yup.number("Enter a valid number").nullable().optional(),
   image_url: yup.string().optional(),
 });

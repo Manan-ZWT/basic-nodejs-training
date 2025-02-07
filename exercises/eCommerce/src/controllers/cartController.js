@@ -1,25 +1,28 @@
 // IMPORT ALL REQUIRED MODULES AND FILES
 import { Cart } from "../models/cartsModel.js";
+import { Category } from "../models/categoriesModel.js";
 import { Product } from "../models/productsModel.js";
 import { User } from "../models/usersModel.js";
 import { addtoCart } from "../validators/cartValidators.js";
-import { secretKey } from "../config/config.js";
-import jwt from "jsonwebtoken";
 
 // ADD TO CART FUCNTION
 export const addToCart = async (req, res) => {
-  let { product_id, quantity } = req.body;
-  try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
+  let product_id = parseInt(req.body.product_id);
+  let quantity = parseInt(req.body.quantity);
 
-    let decodedmsg = jwt.verify(token, secretKey);
-    const user_id = parseInt(decodedmsg.id);
+  try {
+    const user_id = parseInt(req.user.id);
+
+    const user = await User.findByPk(user_id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     const data = await Product.findByPk(product_id);
     if (!data) {
       return res.status(404).json({ error: "Product not found" });
     }
+    
     if (data.stock < quantity) {
       return res.status(409).json({
         message: `Not enough stock available for the selected item: ${data.name}`,
@@ -31,11 +34,6 @@ export const addToCart = async (req, res) => {
       product_id,
       quantity,
     });
-
-    const user = await User.findByPk(user_id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
 
     await Cart.create({
       user_id: user_id,
@@ -54,26 +52,22 @@ export const addToCart = async (req, res) => {
 // SHOW CART ITEMS FUNCTION
 export const showCart = async (req, res) => {
   try {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const id = parseInt(decodedmsg.id);
+    const user_id = parseInt(req.user.id);
 
     const data = await Cart.findAll({
       where: {
-        user_id: id,
+        user_id: user_id,
       },
+      attributes: ["id","product_id", "quantity"],
       include: [
         {
           model: Product,
-          attributes: [
-            "name",
-            "description",
-            "price",
-            "stock",
-            "category_id",
-            "image_url",
+          attributes: ["name", "description", "price", "stock", "image_url"],
+          include: [
+            {
+              model: Category,
+              attributes: ["name"],
+            },
           ],
         },
       ],
@@ -96,26 +90,21 @@ export const showCart = async (req, res) => {
 // DELETE FROM CART FUNCTION
 export const deleteFromCart = async (req, res) => {
   try {
-    const product_id = parseInt(req.params.id);
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[2];
-
-    let decodedmsg = jwt.verify(token, secretKey);
-    const id = parseInt(decodedmsg.id);
-
+    const user_id = parseInt(req.user.id);
+    const id = parseInt(req.params.id);
     const cartProduct = await Cart.findOne({
       where: {
-        product_id: product_id,
-        user_id: id,
+        id: id,
+        user_id: user_id,
       },
     });
     if (!cartProduct) {
       return res.status(404).json({
-        message: `Product with product ID: ${product_id} has not been found in your cart`,
+        message: `No entry with ID: ${id} has not been found in your cart`,
       });
     }
     await Cart.destroy({
-      where: { user_id: id, product_id: product_id },
+      where: { user_id: user_id, id: id },
     });
 
     return res.status(200).json({

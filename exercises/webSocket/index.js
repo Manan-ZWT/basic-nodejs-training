@@ -1,4 +1,3 @@
-import { Socket } from "dgram";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -24,10 +23,10 @@ io.on("connection", (socket) => {
   socket.emit("id", socket.id);
 
   socket.on("broadcast", (bmsg) => {
-    io.emit("broadcast", { id: socket.id, message: bmsg });
+    socket.broadcast.emit("broadcast", { id: socket.id, message: bmsg });
   });
 
-  socket.on("message", ({id, message}) => {
+  socket.on("message", ({ id, message }) => {
     io.to(id).emit("message", { senderId: socket.id, message: message });
   });
 

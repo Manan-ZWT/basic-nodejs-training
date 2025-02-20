@@ -11,7 +11,8 @@
     "day-5V": "node exercises/Day_5V/index.js",
     "day-6": "node exercises/Day_6/index.js",
     "day-7": "node exercises/Day_7/index.js",
-    "ecommerce": "node exercises/eCommerceV2/backend/index.js"
+    "ecommerce": "node exercises/eCommerceV2/backend/index.js",
+    "ws": "nodemon exercises/websocket/index.js"
   },
   "type": "module",
   "author": "",
@@ -32,6 +33,9 @@
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "sequelize": "^6.37.5",
+    "socket.io": "^4.8.1",
+    "websocket": "^1.0.35",
+    "ws": "^8.18.0",
     "yup": "^1.6.1"
   }
 }

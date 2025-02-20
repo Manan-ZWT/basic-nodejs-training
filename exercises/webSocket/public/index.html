@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat App</title>
+  </head>
+  <body>
+    <h1>Chat App</h1>
+    <h2>Your Socket ID:</h2>
+    <h3 id="socketId"></h3>
+
+    <h2>Clients Connected</h2>
+    <ul id="clientList"></ul>
+
+    <h2>Send Broadcast Message</h2>
+    <input
+      type="text"
+      id="broadcastmessage"
+      placeholder="Enter the broadcast message"
+    />
+    <button type="submit" onclick="sendBroadcastMessage()">
+      Send Broadcast Message
+    </button>
+
+    <h2>Send Message to your friend</h2>
+    <input type="text" id="socket_id" placeholder="Enter your friend's ID" />
+    <input type="text" id="message" placeholder="Enter the message" />
+    <button type="submit" onclick="sendMessage()">Send Message</button>
+
+    <h3>Server Broadcast Message</h3>
+    <div id="server_broadcast"></div>
+
+    <h3>Your Private chat Message</h3>
+    <div id="private_messages"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      const socket_id = document.getElementById("socketId");
+      const users = document.getElementById("clientList");
+      const bmsg = document.getElementById("broadcastmessage");
+      const broadcast = document.getElementById("server_broadcast");
+      const fid = document.getElementById("socket_id");
+      const msg = document.getElementById("message");
+      const chats = document.getElementById("private_messages");
+
+      socket.on("id", (id) => {
+        socket_id.textContent = id;
+      });
+
+      function sendBroadcastMessage() {
+        socket.emit("broadcast", bmsg.value);
+        bmsg.value = "";
+      }
+
+      function sendMessage() {
+        const id = fid.value;
+        const message = msg.value;
+        console.log(message);
+        socket.emit("message", { id, message });
+        fid.value = "";
+        msg.value = "";
+      }
+
+      socket.on("updatelist", (connections) => {
+        users.innerHTML = "";
+        connections.map((connection) => {
+          const newUser = document.createElement("li");
+          newUser.innerHTML = connection;
+          users.appendChild(newUser);
+        });
+      });
+
+      socket.on("broadcast", (bmsg) => {
+        const newbMsg = document.createElement("p");
+        newbMsg.innerHTML = `Message:${bmsg.message}, (Sender ID: ${bmsg.id})`;
+        broadcast.appendChild(newbMsg);
+      });
+
+      socket.on("message", (msg) => {
+        const newMsg = document.createElement("p");
+        console.log(msg);
+        newMsg.innerHTML = `Message:${msg.message}, (Sender ID: ${msg.senderId})`;
+        chats.appendChild(newMsg);
+      });
+    </script>
+  </body>
+</html>

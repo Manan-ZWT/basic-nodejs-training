@@ -44,6 +44,9 @@
     <button type="submit" onclick="joinRoom()">Join a Room</button>
 
     <h2 id="roomChats">Room chat</h2>
+    <h3 id="currentRoom">Not in any room</h3>
+    <h4>Room Members</h4>
+    <ul id="memberList"></ul>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -59,6 +62,8 @@
       const room_list = document.getElementById("RoomList");
       const room = document.getElementById("room");
       const room_chats = document.getElementById("roomChats");
+      const currentRoom = document.getElementById("currentRoom");
+      const room_members = document.getElementById("memberList");
 
       socket.on("id", (id) => {
         socket_id.textContent = id;
@@ -133,10 +138,19 @@
           const newRoom = document.createElement("li");
           newRoom.innerHTML = room;
           room_list.appendChild(newRoom);
-          // const newRoomName = document.createElement("h3");
-          // newRoomName.textContent = room;
-          // room_chats.appendChild(newRoomName);
-          // newRoomName.appendChild("li").textContent("chats");
+        });
+
+        socket.on("joinedRoom", (room_name) => {
+          currentRoom.textContent = `Current Room: ${room_name}`;
+        });
+
+        socket.on("roomMembers", (roomMembers) => {
+          room_members.innerHTML = "";
+          roomMembers.map((member) => {
+            const newMember = document.createElement("li");
+            newMember.innerHTML = member;
+            room_members.appendChild(newMember);
+          });
         });
       });
     </script>

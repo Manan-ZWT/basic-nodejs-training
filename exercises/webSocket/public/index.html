@@ -34,6 +34,17 @@
     <h3>Your Private chat Message</h3>
     <div id="private_messages"></div>
 
+    <h2>List of Rooms</h2>
+    <ul id="RoomList"></ul>
+
+    <input type="text" id="newroom" placeholder="Enter the name for the room" />
+    <button type="submit" onclick="createRoom()">Create a Room</button>
+
+    <input type="text" id="room" placeholder="Enter the name for the room" />
+    <button type="submit" onclick="joinRoom()">Join a Room</button>
+
+    <h2 id="roomChats">Room chat</h2>
+
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
@@ -44,23 +55,54 @@
       const fid = document.getElementById("socket_id");
       const msg = document.getElementById("message");
       const chats = document.getElementById("private_messages");
+      const newroom = document.getElementById("newroom");
+      const room_list = document.getElementById("RoomList");
+      const room = document.getElementById("room");
+      const room_chats = document.getElementById("roomChats");
 
       socket.on("id", (id) => {
         socket_id.textContent = id;
       });
 
       function sendBroadcastMessage() {
-        socket.emit("broadcast", bmsg.value);
-        bmsg.value = "";
+        if (bmsg.value.trim() !== "") {
+          socket.emit("broadcast", bmsg.value);
+          bmsg.value = "";
+        } else {
+          console.log("Please enter a message");
+        }
       }
 
       function sendMessage() {
         const id = fid.value;
         const message = msg.value;
-        console.log(message);
-        socket.emit("message", { id, message });
-        fid.value = "";
-        msg.value = "";
+        if (id.trim() !== "" && message.trim() !== "") {
+          socket.emit("message", { id, message });
+          fid.value = "";
+          msg.value = "";
+        } else {
+          console.log("Please enter a message");
+        }
+      }
+
+      function createRoom() {
+        const new_room_name = newroom.value;
+        if (new_room_name.trim() !== "") {
+          socket.emit("createRoom", new_room_name);
+          newroom.value = "";
+        } else {
+          console.log("Please enter a name for the Room");
+        }
+      }
+
+      function joinRoom() {
+        const room_name = room.value;
+        if (room_name.trim() !== "") {
+          socket.emit("joinRoom", room_name);
+          room.value = "";
+        } else {
+          console.log("Please enter a valid room name");
+        }
       }
 
       socket.on("updatelist", (connections) => {
@@ -74,15 +116,28 @@
 
       socket.on("broadcast", (bmsg) => {
         const newbMsg = document.createElement("p");
-        newbMsg.innerHTML = `Message:${bmsg.message}, (Sender ID: ${bmsg.id})`;
+        newbMsg.innerHTML = `Message:${bmsg.message} ------->[Sender ID: ${bmsg.id}]`;
         broadcast.appendChild(newbMsg);
       });
 
       socket.on("message", (msg) => {
         const newMsg = document.createElement("p");
         console.log(msg);
-        newMsg.innerHTML = `Message:${msg.message}, (Sender ID: ${msg.senderId})`;
+        newMsg.innerHTML = `Message:${msg.message} ------->[Sender ID: ${msg.senderId}]`;
         chats.appendChild(newMsg);
+      });
+
+      socket.on("updateroomlist", (rooms) => {
+        room_list.innerHTML = "";
+        rooms.map((room) => {
+          const newRoom = document.createElement("li");
+          newRoom.innerHTML = room;
+          room_list.appendChild(newRoom);
+          // const newRoomName = document.createElement("h3");
+          // newRoomName.textContent = room;
+          // room_chats.appendChild(newRoomName);
+          // newRoomName.appendChild("li").textContent("chats");
+        });
       });
     </script>
   </body>

@@ -15,10 +15,13 @@ app.get("/", (req, res) => {
     );
 });
 const connections = new Set();
+const rooms = new Set();
+
 io.on("connection", (socket) => {
   console.log(`Client connected: ${socket.id}`);
   connections.add(socket.id);
   io.emit("updatelist", Array.from(connections));
+  io.emit("updateroomlist", Array.from(rooms));
 
   socket.emit("id", socket.id);
 
@@ -30,10 +33,30 @@ io.on("connection", (socket) => {
     io.to(id).emit("message", { senderId: socket.id, message: message });
   });
 
+  socket.on("createRoom", (new_room_name) => {
+    if (!rooms.has("new_room_name")) {
+      rooms.add(new_room_name);
+      console.log(rooms);
+      io.emit("updateroomlist", Array.from(rooms));
+    } else {
+      console.log("Room already exists");
+    }
+  });
+
+  socket.on("joinRoom", (room_name) => {
+    if (rooms.has(room_name)) {
+      socket.join(room_name);
+      console.log(`${socket.id} has join the room: ${room_name}`);
+    } else {
+      console.log("Room does not exists");
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log(`Client disconnected: ${socket.id}`);
     connections.delete(socket.id);
     io.emit("updatelist", Array.from(connections));
+    io.emit("updateroomlist", Array.from(rooms));
   });
 });
 
